@@ -1,0 +1,24 @@
+{
+  "name": "react-term",
+  "version": "0.0.0",
+  "description": "Simple and lightweight terminal emulator component for React",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lpan/react-term.git"
+  },
+  "keywords": [
+    "terminal",
+    "emulator",
+    "react"
+  ],
+  "author": "Lawrence Pan <lawrencefeipan@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lpan/react-term/issues"
+  },
+  "homepage": "https://github.com/lpan/react-term#readme"
+}
