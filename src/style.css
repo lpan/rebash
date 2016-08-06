@@ -1,0 +1,10 @@
+.blueText {
+  color: blue;
+  font-size: 30px;
+}
+
+.cont {
+  background-color: red;
+  width: 300px;
+  border-radius: 20px;
+}
