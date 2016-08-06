@@ -1,3 +1,6 @@
+lib/
+bundle.js
+
 # Logs
 logs
 *.log
