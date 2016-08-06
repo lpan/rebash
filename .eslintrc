@@ -1,0 +1,14 @@
+{
+  "extends": "airbnb",
+  "env": {
+    "jest": true,
+    "es6": true
+  },
+  "rules": {
+    "consistent-return": 0,
+    "react/jsx-filename-extension": 0,
+    "import/no-extraneous-dependencies": 0,
+    "object-curly-spacing": ["error", "never"],
+    "no-console": ["error", {allow: ["error"]}]
+  }
+}
