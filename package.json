@@ -1,7 +1,7 @@
 {
-  "name": "react-term",
-  "version": "0.0.0",
-  "description": "Simple and lightweight terminal emulator component for React",
+  "name": "rebash",
+  "version": "0.0.1",
+  "description": "Bash interface for you website. Built with React",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --inline --content-base example/build/",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lpan/react-term.git"
+    "url": "git+https://github.com/lpan/rebash.git"
   },
   "keywords": [
     "terminal",
@@ -19,9 +19,9 @@
   "author": "Lawrence Pan <lawrencefeipan@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/lpan/react-term/issues"
+    "url": "https://github.com/lpan/rebash/issues"
   },
-  "homepage": "https://github.com/lpan/react-term#readme",
+  "homepage": "https://github.com/lpan/rebash#readme",
   "peerDependencies": {
     "react": "^15.3.0",
     "react-dom": "^15.3.0"
