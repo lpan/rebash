@@ -17,14 +17,14 @@ const mockComponent = () => ({
   },
 });
 
-const mockCommands = {
-  ls: (self, args) => `ls: ${args}`,
-  lmao: (self, args) => `lmao: ${args}`,
-};
-
 describe('bindCommands()', () => {
   it('should bind commands to "this" and update the state', () => {
     const component = mockComponent();
+    const mockCommands = {
+      ls: (self, args) => `ls: ${args}`,
+      lmao: (self, args) => `lmao: ${args}`,
+    };
+
     const finalCommands = bindCommands(mockCommands, component);
 
     compose(
@@ -38,6 +38,25 @@ describe('bindCommands()', () => {
         ['ls', 'ls: a,b'],
         ['lmao', 'lmao: a,b'],
       ],
+    });
+  });
+
+  it('does not update the state if the function returns undefined', () => {
+    const component = mockComponent();
+    const mockCommands = {
+      clear: () => {},
+    };
+
+    const finalCommands = bindCommands(mockCommands, component);
+
+    compose(
+      forEach(command => { command[1](['a', 'b']); }),
+      toPairs
+    )(finalCommands);
+
+    expect(component.state).toEqual({
+      history: ['clear'],
+      visibles: [],
     });
   });
 });
