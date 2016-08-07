@@ -9,8 +9,8 @@ import {assoc, reduce, compose, toPairs} from 'ramda';
  *
  * @returns {func}, modified function
  */
-const decorateSelf = (commandFn, self) => command => {
-  const output = commandFn(command, self);
+const decorateSelf = ([command, commandFn], self) => args => {
+  const output = commandFn(self, args);
   const {history, visibles} = self.state;
 
   self.setState({history: [...history, command]});
@@ -31,7 +31,7 @@ const decorateSelf = (commandFn, self) => command => {
  */
 const bindCommands = (commands, self) =>
   compose(
-    reduce((accum, pair) => assoc(pair[0], decorateSelf(pair[1], self), accum), {}),
+    reduce((accum, pair) => assoc(pair[0], decorateSelf(pair, self), accum), {}),
     toPairs
   )(commands);
 

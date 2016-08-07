@@ -18,8 +18,8 @@ const mockComponent = () => ({
 });
 
 const mockCommands = {
-  ls: command => `command is ${command}`,
-  clear: command => `command is ${command}`,
+  ls: (self, args) => `ls: ${args}`,
+  lmao: (self, args) => `lmao: ${args}`,
 };
 
 describe('bindCommands()', () => {
@@ -28,15 +28,15 @@ describe('bindCommands()', () => {
     const finalCommands = bindCommands(mockCommands, component);
 
     compose(
-      forEach(command => { command[1](command[0]); }),
+      forEach(command => { command[1](['a', 'b']); }),
       toPairs
     )(finalCommands);
 
     expect(component.state).toEqual({
-      history: ['ls', 'clear'],
+      history: ['ls', 'lmao'],
       visibles: [
-        ['ls', 'command is ls'],
-        ['clear', 'command is clear'],
+        ['ls', 'ls: a,b'],
+        ['lmao', 'lmao: a,b'],
       ],
     });
   });
