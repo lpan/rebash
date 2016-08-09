@@ -1,6 +1,5 @@
 import {
-  assoc, append, reduce, compose, toPairs, slice, last, flatten, cond,
-  always, type, complement, equals,
+  assoc, append, reduce, compose, toPairs, slice, last, flatten, type, equals,
 } from 'ramda';
 
 /**
@@ -30,22 +29,23 @@ const addOutput = (visibles, newOutput) => {
  * @returns {func}, modified function
  */
 const decorateSelf = ([command, commandFn], self) => args => {
-  const result = commandFn(self, args);
   const {history, visibles} = self.state;
-
-  const isString = compose(equals('String'), type);
-
-  const getOutput = cond([
-    [isString, always([result])],
-    [complement(isString), always([''])],
-  ]);
 
   const newState = {
     history: [...history, command],
-    visibles: [...visibles, {command, outputs: getOutput(result)}],
+    visibles: [...visibles, {command, outputs: []}],
   };
 
   self.setState(newState);
+
+  const result = commandFn(self, args);
+  const isString = compose(equals('String'), type);
+
+  if (isString(result)) {
+    self.setState({
+      visibles: addOutput(newState.visibles, result),
+    });
+  }
 
   // if output returns an unresolved promise
   if (result && type(result.then) === 'Function') {

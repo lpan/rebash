@@ -5,8 +5,7 @@ import {toPairs, forEach, compose} from 'ramda';
 
 const mockComponent = () => ({
   state: {
-    visibles: [],
-    history: [],
+    visibles: [], history: [],
   },
   setState(obj) {
     const setThis = compose(
@@ -18,6 +17,11 @@ const mockComponent = () => ({
 });
 
 describe('bindCommands()', () => {
+  const runCommands = compose(
+    forEach(command => { command[1](['a', 'b']); }),
+    toPairs
+  );
+
   it('should bind commands to "this" and update the state', () => {
     const component = mockComponent();
     const mockCommands = {
@@ -26,11 +30,7 @@ describe('bindCommands()', () => {
     };
 
     const finalCommands = bindCommands(mockCommands, component);
-
-    compose(
-      forEach(command => { command[1](['a', 'b']); }),
-      toPairs
-    )(finalCommands);
+    runCommands(finalCommands);
 
     expect(component.state).toEqual({
       history: ['ls', 'lmao'],
@@ -54,17 +54,34 @@ describe('bindCommands()', () => {
     };
 
     const finalCommands = bindCommands(mockCommands, component);
-
-    compose(
-      forEach(command => { command[1](['a', 'b']); }),
-      toPairs
-    )(finalCommands);
+    runCommands(finalCommands);
 
     expect(component.state).toEqual({
       history: ['clear'],
       visibles: [{
         command: 'clear',
-        outputs: [''],
+        outputs: [],
+      }],
+    });
+  });
+
+  it('handles promises', done => {
+    const component = mockComponent();
+    const mockCommands = {
+      wait: () => new Promise(resolve => {
+        resolve('yo');
+        done();
+      })
+    };
+
+    const finalCommands = bindCommands(mockCommands, component);
+    runCommands(finalCommands);
+
+    expect(component.state).toEqual({
+      history: ['wait'],
+      visibles: [{
+        command: 'wait',
+        outputs: ['yo'],
       }],
     });
   });
