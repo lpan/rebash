@@ -50,7 +50,7 @@ const decorateSelf = ([command, commandFn], self) => args => {
   // if output returns an unresolved promise
   if (result && type(result.then) === 'Function') {
     result.then(output => {
-      self.setState({visibles: addOutput(visibles, output)});
+      self.setState({visibles: addOutput(newState.visibles, output)});
     });
   }
 };

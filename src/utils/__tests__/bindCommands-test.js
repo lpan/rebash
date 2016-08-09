@@ -71,7 +71,7 @@ describe('bindCommands()', () => {
       wait: () => new Promise(resolve => {
         resolve('yo');
         done();
-      })
+      }),
     };
 
     const finalCommands = bindCommands(mockCommands, component);
