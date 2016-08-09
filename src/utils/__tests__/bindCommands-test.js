@@ -35,8 +35,14 @@ describe('bindCommands()', () => {
     expect(component.state).toEqual({
       history: ['ls', 'lmao'],
       visibles: [
-        ['ls', 'ls: a,b'],
-        ['lmao', 'lmao: a,b'],
+        {
+          command: 'ls',
+          outputs: ['ls: a,b'],
+        },
+        {
+          command: 'lmao',
+          outputs: ['lmao: a,b'],
+        },
       ],
     });
   });
@@ -56,7 +62,10 @@ describe('bindCommands()', () => {
 
     expect(component.state).toEqual({
       history: ['clear'],
-      visibles: [],
+      visibles: [{
+        command: 'clear',
+        outputs: [''],
+      }],
     });
   });
 });

@@ -1,4 +1,24 @@
-import {assoc, reduce, compose, toPairs} from 'ramda';
+import {
+  assoc, append, reduce, compose, toPairs, slice, last, flatten, cond,
+  always, type, complement, equals,
+} from 'ramda';
+
+/**
+ * Add an output to 'outputs' of the latest visible
+ *
+ * @param {[Obj]} visibles, array of {command: '', outputs: []}
+ * @param {String|[String]} newOutput, the string we wish to push to the screen
+ *
+ * @returns {[Obj]}, new 'visibles' that has 'newOutput' appended to outputs
+ */
+const addOutput = (visibles, newOutput) => {
+  const {outputs, command} = last(visibles);
+  const restVisibles = slice(0, -1, visibles);
+
+  const appendNewOutput = compose(flatten, append(newOutput));
+
+  return [...restVisibles, {command, outputs: appendNewOutput(outputs)}];
+};
 
 /**
  * Decorates the function mapped to a command so that it will update 'history' and
@@ -10,14 +30,28 @@ import {assoc, reduce, compose, toPairs} from 'ramda';
  * @returns {func}, modified function
  */
 const decorateSelf = ([command, commandFn], self) => args => {
-  const output = commandFn(self, args);
+  const result = commandFn(self, args);
   const {history, visibles} = self.state;
 
-  self.setState({history: [...history, command]});
+  const isString = compose(equals('String'), type);
 
-  if (typeof output !== 'undefined') {
-    self.setState({history: [...history, command]});
-    self.setState({visibles: [...visibles, [command, output]]});
+  const getOutput = cond([
+    [isString, always([result])],
+    [complement(isString), always([''])],
+  ]);
+
+  const newState = {
+    history: [...history, command],
+    visibles: [...visibles, {command, outputs: getOutput(result)}],
+  };
+
+  self.setState(newState);
+
+  // if output returns an unresolved promise
+  if (result && type(result.then) === 'Function') {
+    result.then(output => {
+      self.setState({visibles: addOutput(visibles, output)});
+    });
   }
 };
 

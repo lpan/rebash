@@ -8,7 +8,7 @@ class Terminal extends Component {
     this.state = {
       // A list of commands <String> can be access with up-arrow
       history: [],
-      // A list of tuples -> [:command, :output] that are visible on the screen
+      // An ordered list of {command: '', outputs: []} visible on to the user
       visibles: [],
       // A list of directories represented as absolute path
       directories,
