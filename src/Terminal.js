@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import Wrapper from './components/Wrapper';
 import initDirs from './utils/initDirs';
 
 class Terminal extends Component {
@@ -8,7 +9,7 @@ class Terminal extends Component {
     const {initialPath, directories, files} = props;
     this.state = {
       // A list of commands <String> can be access with up-arrow
-      history: [],
+      histories: [],
       // An ordered list of {command: '', outputs: []} visible on to the user
       visibles: [],
       // A list of directories and files
@@ -22,7 +23,7 @@ class Terminal extends Component {
 
   render() {
     return (
-      <div>{JSON.stringify(this.state.directories)}</div>
+      <Wrapper {...this.state} />
     );
   }
 }

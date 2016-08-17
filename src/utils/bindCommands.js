@@ -29,10 +29,10 @@ const addOutput = (visibles, newOutput) => {
  * @returns {func}, modified function
  */
 const decorateSelf = ([command, commandFn], self) => args => {
-  const {history, visibles} = self.state;
+  const {histories, visibles} = self.state;
 
   const newState = {
-    history: [...history, command],
+    histories: [...histories, command],
     visibles: [...visibles, {command, outputs: []}],
   };
 
