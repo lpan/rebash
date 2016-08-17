@@ -2,7 +2,8 @@
   "extends": "airbnb",
   "env": {
     "jest": true,
-    "es6": true
+    "es6": true,
+    "browser": true
   },
   "rules": {
     "consistent-return": 0,
