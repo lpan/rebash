@@ -1,5 +1,5 @@
 import {
-  assoc, append, reduce, compose, toPairs, slice, last, flatten, type, equals,
+  assoc, append, reduce, compose, toPairs, last, flatten, type, equals, init,
 } from 'ramda';
 
 /**
@@ -12,7 +12,7 @@ import {
  */
 const addOutput = (visibles, newOutput) => {
   const {outputs, command} = last(visibles);
-  const restVisibles = slice(0, -1, visibles);
+  const restVisibles = init(visibles);
 
   const appendNewOutput = compose(flatten, append(newOutput));
 
