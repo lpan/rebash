@@ -9,7 +9,7 @@ class Terminal extends Component {
     const {initialPath, directories, files} = props;
     this.state = {
       // A list of commands <String> can be access with up-arrow
-      histories: [],
+      history: [],
       // An ordered list of {command: '', outputs: []} visible on to the user
       visibles: [],
       // A list of directories and files
