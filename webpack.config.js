@@ -16,7 +16,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['', '.js'],
+    extensions: ['', '.js', '.css'],
     alias: {
       'react-term': path.resolve(__dirname, './src/Terminal.js'),
     },
