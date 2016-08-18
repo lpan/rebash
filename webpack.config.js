@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const path = require('path');
-const autoprefixer = require('autoprefixer');
 
 const SRC_PATH = path.join(__dirname, 'example', 'app.js');
 const BUILD_PATH = path.join(__dirname, 'example', 'build');
@@ -18,7 +17,7 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.css'],
     alias: {
-      'rebash': path.resolve(__dirname, './src/Terminal.js'),
+      rebash: path.resolve(__dirname, './src/Terminal.js'),
     },
   },
 
@@ -29,19 +28,7 @@ module.exports = {
         exclude: [/node_modules/, /.+\.config.js/],
         loader: 'babel',
       },
-      {
-        test: /\.css$/,
-        loaders: [
-          'style-loader',
-          'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]', // eslint-disable-line
-          'postcss-loader',
-        ],
-      },
     ],
-  },
-
-  postcss() {
-    return [autoprefixer];
   },
 
   plugins: [

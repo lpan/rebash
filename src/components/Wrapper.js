@@ -2,7 +2,15 @@ import React, {PropTypes} from 'react';
 import Command from './Command';
 import {visiblePropTypes} from '../utils/customPropTypes';
 import {map, addIndex} from 'ramda';
-import styles from './style.css';
+
+const styles = {
+  container: {
+    height: '400px',
+    width: '400px',
+    backgroundColor: 'black',
+    color: 'white',
+  },
+};
 
 const renderOldCommands = addIndex(map)((visible, i) => (
   <Command key={i} visible={visible} />
@@ -14,7 +22,7 @@ const onClickFocus = evt => {
 
 const Wrapper = ({visibles}) => (
   <div
-    className={styles.container}
+    style={styles.container}
     onClick={onClickFocus}
   >
     {renderOldCommands(visibles)}
