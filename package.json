@@ -54,7 +54,9 @@
   "jest": {
     "unmockedModulePathPatterns": [
       "react",
-      "ramda"
+      "ramda",
+      "enzyme",
+      "./src/utils/*"
     ]
   },
   "dependencies": {

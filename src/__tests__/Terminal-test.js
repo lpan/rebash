@@ -1,5 +1,4 @@
-// TODO figure out why
-jest.disableAutomock();
+jest.unmock('../Terminal');
 
 import React from 'react';
 import Terminal from '../Terminal';
