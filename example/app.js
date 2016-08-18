@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Terminal from 'react-term';
+import Terminal from 'rebash';
 import {head} from 'ramda';
 
 const commands = {
