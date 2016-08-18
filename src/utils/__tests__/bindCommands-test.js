@@ -5,7 +5,7 @@ import {toPairs, forEach, compose} from 'ramda';
 
 const mockComponent = () => ({
   state: {
-    visibles: [], histories: [],
+    visibles: [], history: [],
   },
   setState(obj) {
     const setThis = compose(
@@ -33,7 +33,7 @@ describe('bindCommands()', () => {
     runCommands(finalCommands);
 
     expect(component.state).toEqual({
-      histories: ['ls', 'lmao'],
+      history: ['ls', 'lmao'],
       visibles: [
         {
           command: 'ls',
@@ -57,7 +57,7 @@ describe('bindCommands()', () => {
     runCommands(finalCommands);
 
     expect(component.state).toEqual({
-      histories: ['clear'],
+      history: ['clear'],
       visibles: [{
         command: 'clear',
         outputs: [],
@@ -78,7 +78,7 @@ describe('bindCommands()', () => {
     runCommands(finalCommands);
 
     expect(component.state).toEqual({
-      histories: ['wait'],
+      history: ['wait'],
       visibles: [{
         command: 'wait',
         outputs: ['yo'],

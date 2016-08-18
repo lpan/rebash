@@ -10,7 +10,7 @@ import {
  *
  * @returns {[Obj]}, new 'visibles' that has 'newOutput' appended to outputs
  */
-const addOutput = (visibles, newOutput) => {
+const appendOutput = ({visibles}, newOutput) => {
   const {outputs, command} = last(visibles);
   const restVisibles = init(visibles);
 
@@ -29,10 +29,10 @@ const addOutput = (visibles, newOutput) => {
  * @returns {func}, modified function
  */
 const decorateSelf = ([command, commandFn], self) => args => {
-  const {histories, visibles} = self.state;
+  const {history, visibles} = self.state;
 
   const newState = {
-    histories: [...histories, command],
+    history: [...history, command],
     visibles: [...visibles, {command, outputs: []}],
   };
 
@@ -43,14 +43,14 @@ const decorateSelf = ([command, commandFn], self) => args => {
 
   if (isString(result)) {
     self.setState({
-      visibles: addOutput(newState.visibles, result),
+      visibles: appendOutput(newState, result),
     });
   }
 
   // if output returns an unresolved promise
   if (result && type(result.then) === 'Function') {
     result.then(output => {
-      self.setState({visibles: addOutput(newState.visibles, output)});
+      self.setState({visibles: appendOutput(newState, output)});
     });
   }
 };
