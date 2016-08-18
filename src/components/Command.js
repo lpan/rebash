@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {visiblePropTypes} from '../utils/customPropTypes';
-import {isEmpty} from 'ramda';
 
 const renderOutput = visible => JSON.stringify(visible);
 

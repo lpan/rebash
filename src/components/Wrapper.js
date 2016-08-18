@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import Command from './Command';
 import {visiblePropTypes} from '../utils/customPropTypes';
 import {map, addIndex} from 'ramda';
-import styles from './style';
+import styles from './style.css';
 
 const renderOldCommands = addIndex(map)((visible, i) => (
   <Command key={i} visible={visible} />
