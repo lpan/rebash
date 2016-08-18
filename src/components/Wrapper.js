@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PropTypes} from 'react';
 import Command from './Command';
 import {visiblePropTypes} from '../utils/customPropTypes';
 import {map, addIndex} from 'ramda';
@@ -8,33 +8,21 @@ const renderOldCommands = addIndex(map)((visible, i) => (
   <Command key={i} visible={visible} />
 ));
 
-class Wrapper extends Component {
-  constructor() {
-    super();
-    this.onClickFocus = this.onClickFocus.bind(this);
-  }
+const onClickFocus = evt => {
+  evt.currentTarget.lastChild.firstChild.lastChild.focus();
+};
 
-  onClickFocus() {
-    this.input.focus();
-  }
-
-  render() {
-    const {visibles} = this.props;
-
-    return (
-      <div
-        className={styles.container}
-        onClick={this.onClickFocus}
-      >
-        {renderOldCommands(visibles)}
-        <Command
-          ref={ref => { this.input = ref; }}
-          key={visibles.length}
-        />
-      </div>
-    );
-  }
-}
+const Wrapper = ({visibles}) => (
+  <div
+    className={styles.container}
+    onClick={onClickFocus}
+  >
+    {renderOldCommands(visibles)}
+    <Command
+      key={visibles.length}
+    />
+  </div>
+);
 
 Wrapper.propTypes = {
   visibles: PropTypes.arrayOf(visiblePropTypes).isRequired,

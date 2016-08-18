@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {visiblePropTypes} from '../utils/customPropTypes';
 
 const renderOutput = visible => JSON.stringify(visible);
@@ -9,31 +9,20 @@ const onEnter = evt => {
   }
 };
 
-class Command extends Component {
-  focus() {
-    this.input.focus();
-  }
-
-  render() {
-    const {visible} = this.props;
-
-    return (
-      <div>
-        <div>
-          <div>prompt</div>
-          <input
-            ref={ref => { this.input = ref; }}
-            disabled={visible}
-            onKeyPress={onEnter}
-            autoComplete={false}
-            autoFocus
-          />
-        </div>
-        {renderOutput(visible)}
-      </div>
-    );
-  }
-}
+const Command = ({visible}) => (
+  <div>
+    <div>
+      <div>prompt</div>
+      <input
+        disabled={visible}
+        onKeyPress={onEnter}
+        autoComplete={false}
+        autoFocus
+      />
+    </div>
+    {renderOutput(visible)}
+  </div>
+);
 
 Command.propTypes = {
   visible: visiblePropTypes,
