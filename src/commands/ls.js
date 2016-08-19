@@ -1,7 +1,8 @@
 import React from 'react';
 import {output, highlightedOutput} from '../styles';
 import {
-  keys, slice, map, filter, compose, addIndex, equals, allPass, last, concat,
+  slice, map, filter, compose, addIndex, equals, allPass, last, concat, sortBy,
+  path,
 } from 'ramda';
 
 // map files/dirs to virtual dom nodes
@@ -21,18 +22,26 @@ const isChildren = (currentPath, file) => equals(
   currentPath.length + 1
 );
 
+// sort final span tags by alphabetical order
+const sortByName = sortBy(path(['props', 'children']));
+
+const sortAndConcat = compose(sortByName, concat);
+
 const ls = self => {
-  const {currentPath, directories} = self.state;
-  const files = keys(self.state.files);
+  const {currentPath, fileSystem} = self.state;
+  const {directories, files} = fileSystem;
 
   const getFiles = compose(
     map(last),
     filter(file => allPass([isChildren, hasSameRoot])(currentPath, file))
   );
 
-  return concat(
-    mapOutput(output)(getFiles(files)),
-    mapOutput(highlightedOutput)(getFiles(directories))
+  const mapNormal = mapOutput(output);
+  const mapHighlight = mapOutput(highlightedOutput);
+
+  return sortAndConcat(
+    mapNormal(getFiles(files)),
+    mapHighlight(getFiles(directories))
   );
 };
 

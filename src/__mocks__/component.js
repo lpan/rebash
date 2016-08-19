@@ -1,9 +1,14 @@
 import {toPairs, forEach, compose} from 'ramda';
 
-const mockComponent = (currentPath = [], directories = [], files = {}) => ({
+const fsDefault = {
+  directories: [],
+  files: [],
+};
+
+const mockComponent = (currentPath = [], fileSystem = fsDefault, files = {}) => ({
   state: {
     currentPath,
-    directories,
+    fileSystem,
     files,
     visibles: [],
     history: [],
