@@ -52,6 +52,7 @@
       "react",
       "ramda",
       "enzyme",
+      "./src/styles.js",
       "./src/utils/*",
       "./src/__mocks__/*"
     ]
