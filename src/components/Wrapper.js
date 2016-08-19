@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import Command from './Command';
-import {visiblePropTypes} from '../utils/customPropTypes';
+import {visibleType} from '../utils/customPropTypes';
 import {map, addIndex} from 'ramda';
 
 const styles = {
@@ -33,9 +33,7 @@ const Wrapper = ({visibles}) => (
 );
 
 Wrapper.propTypes = {
-  visibles: PropTypes.arrayOf(visiblePropTypes).isRequired,
-  directories: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
-  files: PropTypes.objectOf(PropTypes.string).isRequired,
+  visibles: PropTypes.arrayOf(visibleType).isRequired,
   currentPath: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 

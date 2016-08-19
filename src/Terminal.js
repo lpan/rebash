@@ -3,9 +3,11 @@ import Wrapper from './components/Wrapper';
 import initFileSystem from './utils/initFileSystem';
 import defaultCommands from './commands';
 import {commandsType} from './utils/customPropTypes';
-import {merge} from 'ramda';
+import {merge, pick} from 'ramda';
 
 const mergeDefault = merge(defaultCommands);
+// props we want to pass to wrapper from this.state
+const pickProps = pick(['visibles', 'currentPath']);
 
 class Terminal extends Component {
   constructor(props) {
@@ -33,7 +35,7 @@ class Terminal extends Component {
 
   render() {
     return (
-      <Wrapper {...this.state} />
+      <Wrapper {...pickProps(this.state)} />
     );
   }
 }
