@@ -22,11 +22,11 @@ const splitCommand = split(' ');
 
 const onEnter = commands => evt => {
   if (evt.key === 'Enter') {
-    const commandEntered = splitCommand(evt.target.value);
-    const [command, ...args] = commandEntered;
+    const commandEntered = evt.target.value;
+    const [command, ...args] = splitCommand(commandEntered);
 
     if (contains(command, keys(commands))) {
-      commands[command](args);
+      commands[command](args, commandEntered);
     }
   }
 };
@@ -36,6 +36,7 @@ const Command = ({visible}, {commands}) => (
     <div>
       <div>prompt</div>
       <input
+        value={visible && visible.command}
         disabled={visible}
         onKeyPress={onEnter(commands)}
         autoComplete={false}

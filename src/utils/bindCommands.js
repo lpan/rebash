@@ -1,6 +1,7 @@
 import {isValidElement} from 'react';
 import {
   assoc, append, reduce, compose, toPairs, last, flatten, type, equals, init,
+  anyPass,
 } from 'ramda';
 
 /**
@@ -29,7 +30,7 @@ const appendOutput = ({visibles}, newOutput) => {
  *
  * @returns {func}, modified function
  */
-const decorateSelf = ([command, commandFn], self) => args => {
+const decorateSelf = ([commandName, commandFn], self) => (args, command) => {
   const {history, visibles} = self.state;
 
   const newState = {
@@ -42,13 +43,9 @@ const decorateSelf = ([command, commandFn], self) => args => {
   const result = commandFn(self, args);
   const isString = compose(equals('String'), type);
 
-  if (isValidElement(result)) {
-    self.setState({
-      visibles: appendOutput(newState, result),
-    });
-  }
+  const isValidOutput = anyPass([isValidElement, isString]);
 
-  if (isString(result)) {
+  if (isValidOutput(result)) {
     self.setState({
       visibles: appendOutput(newState, result),
     });
