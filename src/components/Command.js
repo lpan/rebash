@@ -1,5 +1,5 @@
 import React from 'react';
-import {visiblePropTypes} from '../utils/customPropTypes';
+import {visibleType, commandsType} from '../utils/customPropTypes';
 
 const renderOutput = visible => JSON.stringify(visible);
 
@@ -25,7 +25,11 @@ const Command = ({visible}) => (
 );
 
 Command.propTypes = {
-  visible: visiblePropTypes,
+  visible: visibleType,
+};
+
+Command.contextTypes = {
+  commands: commandsType,
 };
 
 export default Command;

@@ -1,6 +1,11 @@
 import React, {Component, PropTypes} from 'react';
 import Wrapper from './components/Wrapper';
 import initFileSystem from './utils/initFileSystem';
+import defaultCommands from './commands';
+import {commandsType} from './utils/customPropTypes';
+import {merge} from 'ramda';
+
+const mergeDefault = merge(defaultCommands);
 
 class Terminal extends Component {
   constructor(props) {
@@ -21,6 +26,11 @@ class Terminal extends Component {
     };
   }
 
+  getChildContext() {
+    const commands = mergeDefault(this.props.commands);
+    return {commands};
+  }
+
   render() {
     return (
       <Wrapper {...this.state} />
@@ -28,13 +38,17 @@ class Terminal extends Component {
   }
 }
 
+Terminal.childContextTypes = {
+  commands: commandsType,
+};
+
 Terminal.propTypes = {
   // a list of directory paths
   directories: PropTypes.arrayOf(PropTypes.string),
   // file content mapped to file absolute path
   files: PropTypes.objectOf(PropTypes.string),
   initialPath: PropTypes.arrayOf(PropTypes.string),
-  commands: PropTypes.objectOf(PropTypes.func),
+  commands: commandsType,
 };
 
 Terminal.defaultProps = {
