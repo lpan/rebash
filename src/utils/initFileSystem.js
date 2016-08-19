@@ -16,6 +16,9 @@ const mapToPath = map(splitPath);
 // mapToPath for fileDB
 const mapFileDir = compose(map(splitFilePath), keys);
 
+// get file paths
+const mapFilePath = compose(mapToPath, keys);
+
 /**
  * Create a list that contains the absolute paths of all the dirs in the
  * "file system"
@@ -23,9 +26,15 @@ const mapFileDir = compose(map(splitFilePath), keys);
  * @param {[String]} directories - list of directories
  * @param {obj} filesDB - file content mapped to filename
  *
- * @returns {[[String]]} - list of location lists
+ * @returns {files: [[String]], directories: [[String]]}
  */
-const initDirs = (directories, filesDB) =>
-  uniq(concat(mapToPath(directories), mapFileDir(filesDB)));
+const initFileSystem = (dirList, filesDB) => {
+  const files = mapFilePath(filesDB);
+  const directories = uniq(
+    concat(mapToPath(dirList), mapFileDir(filesDB))
+  );
 
-export default initDirs;
+  return {files, directories};
+};
+
+export default initFileSystem;

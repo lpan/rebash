@@ -18,9 +18,14 @@ describe('The <Terminal /> component', () => {
     expect(wrapper.state()).toEqual({
       history: [],
       visibles: [],
-      directories: [
-        ['home', 'lpan'],
-      ],
+      fileSystem: {
+        directories: [
+          ['home', 'lpan'],
+        ],
+        files: [
+          ['home', 'lpan', 'lmao.js'],
+        ],
+      },
       files: {'/home/lpan/lmao.js': null},
       currentPath: ['/'],
     });

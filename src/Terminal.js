@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import Wrapper from './components/Wrapper';
-import initDirs from './utils/initDirs';
+import initFileSystem from './utils/initFileSystem';
 
 class Terminal extends Component {
   constructor(props) {
@@ -12,8 +12,8 @@ class Terminal extends Component {
       history: [],
       // An ordered list of {command: '', outputs: []} visible on to the user
       visibles: [],
-      // A list of directories and files
-      directories: initDirs(directories, files),
+      // {directories: [], files: []}
+      fileSystem: initFileSystem(directories, files),
       // look up a file's content using its absolute path as key
       files,
       // an array representation of current path
