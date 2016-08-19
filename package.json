@@ -52,7 +52,8 @@
       "react",
       "ramda",
       "enzyme",
-      "./src/utils/*"
+      "./src/utils/*",
+      "./src/__mocks__/*"
     ]
   },
   "dependencies": {

@@ -1,20 +1,10 @@
 jest.unmock('../bindCommands');
 
 import bindCommands from '../bindCommands';
-import {toPairs, forEach, compose} from 'ramda';
+import mockComponent from '../../__mocks__/component';
+import {pick, toPairs, forEach, compose} from 'ramda';
 
-const mockComponent = () => ({
-  state: {
-    visibles: [], history: [],
-  },
-  setState(obj) {
-    const setThis = compose(
-      forEach(pair => { this.state[pair[0]] = pair[1]; }),
-      toPairs
-    );
-    setThis(obj);
-  },
-});
+const pickState = pick(['history', 'visibles']);
 
 describe('bindCommands()', () => {
   const runCommands = compose(
@@ -32,7 +22,7 @@ describe('bindCommands()', () => {
     const finalCommands = bindCommands(mockCommands, component);
     runCommands(finalCommands);
 
-    expect(component.state).toEqual({
+    expect(pickState(component.state)).toEqual({
       history: ['ls', 'lmao'],
       visibles: [
         {
@@ -56,7 +46,7 @@ describe('bindCommands()', () => {
     const finalCommands = bindCommands(mockCommands, component);
     runCommands(finalCommands);
 
-    expect(component.state).toEqual({
+    expect(pickState(component.state)).toEqual({
       history: ['clear'],
       visibles: [{
         command: 'clear',
@@ -77,7 +67,7 @@ describe('bindCommands()', () => {
     const finalCommands = bindCommands(mockCommands, component);
     runCommands(finalCommands);
 
-    expect(component.state).toEqual({
+    expect(pickState(component.state)).toEqual({
       history: ['wait'],
       visibles: [{
         command: 'wait',
