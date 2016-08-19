@@ -16,11 +16,14 @@ const directories = [
   '/etc/nginx/',
 ];
 
+const initialPath = ['home'];
+
 ReactDOM.render(
   <Terminal
     files={files}
     directories={directories}
     commands={commands}
+    initialPath={initialPath}
   />,
   document.getElementById('root')
 );

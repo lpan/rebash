@@ -39,9 +39,13 @@ const ls = self => {
   const mapNormal = mapOutput(output);
   const mapHighlight = mapOutput(highlightedOutput);
 
-  return sortAndConcat(
-    mapNormal(getFiles(files)),
-    mapHighlight(getFiles(directories))
+  return (
+    <div>
+      {sortAndConcat(
+        mapNormal(getFiles(files)),
+        mapHighlight(getFiles(directories))
+      )}
+    </div>
   );
 };
 

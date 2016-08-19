@@ -1,11 +1,13 @@
 import React, {Component, PropTypes} from 'react';
 import Wrapper from './components/Wrapper';
 import initFileSystem from './utils/initFileSystem';
+import bindCommands from './utils/bindCommands';
 import defaultCommands from './commands';
 import {commandsType} from './utils/customPropTypes';
 import {merge, pick} from 'ramda';
 
 const mergeDefault = merge(defaultCommands);
+
 // props we want to pass to wrapper from this.state
 const pickProps = pick(['visibles', 'currentPath']);
 
@@ -29,7 +31,7 @@ class Terminal extends Component {
   }
 
   getChildContext() {
-    const commands = mergeDefault(this.props.commands);
+    const commands = bindCommands(mergeDefault(this.props.commands), this);
     return {commands};
   }
 
@@ -54,7 +56,7 @@ Terminal.propTypes = {
 };
 
 Terminal.defaultProps = {
-  initialPath: ['/'],
+  initialPath: [],
   files: {},
   directories: [],
 };

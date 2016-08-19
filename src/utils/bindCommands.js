@@ -1,3 +1,4 @@
+import {isValidElement} from 'react';
 import {
   assoc, append, reduce, compose, toPairs, last, flatten, type, equals, init,
 } from 'ramda';
@@ -40,6 +41,12 @@ const decorateSelf = ([command, commandFn], self) => args => {
 
   const result = commandFn(self, args);
   const isString = compose(equals('String'), type);
+
+  if (isValidElement(result)) {
+    self.setState({
+      visibles: appendOutput(newState, result),
+    });
+  }
 
   if (isString(result)) {
     self.setState({
