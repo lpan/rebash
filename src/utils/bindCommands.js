@@ -1,4 +1,5 @@
 import {isValidElement} from 'react';
+import parseArgs from './parseArgs';
 import {
   assoc, append, reduce, compose, toPairs, last, flatten, type, equals, init,
   anyPass,
@@ -30,8 +31,9 @@ const appendOutput = ({visibles}, newOutput) => {
  *
  * @returns {func}, modified function
  */
-const decorateSelf = ([commandName, commandFn], self) => (args, command) => {
+const decorateSelf = ([commandName, commandFn], self) => command => {
   const {history, visibles} = self.state;
+  const args = parseArgs(command);
 
   const newState = {
     history: [...history, command],

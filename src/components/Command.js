@@ -2,6 +2,7 @@ import React from 'react';
 import {visibleType, commandsType} from '../utils/customPropTypes';
 import {
   compose, keys, contains, split, map, addIndex, cond, T, isNil, complement, always,
+  head,
 } from 'ramda';
 
 // extract {outputs}, returns [] if visible not defined
@@ -18,15 +19,15 @@ const mapOutputs = addIndex(map)((output, i) =>
 
 const renderOutputs = compose(mapOutputs, getOutputs);
 
-const splitCommand = split(' ');
+const getCommand = compose(head, split(' '));
 
 const onEnter = commands => evt => {
   if (evt.key === 'Enter') {
     const commandEntered = evt.target.value;
-    const [command, ...args] = splitCommand(commandEntered);
+    const commandName = getCommand(commandEntered);
 
-    if (contains(command, keys(commands))) {
-      commands[command](args, commandEntered);
+    if (contains(commandName, keys(commands))) {
+      commands[commandName](commandEntered);
     }
   }
 };
