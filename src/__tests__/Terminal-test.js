@@ -27,7 +27,7 @@ describe('The <Terminal /> component', () => {
         ],
       },
       files: {'/home/lpan/lmao.js': null},
-      currentPath: ['/'],
+      currentPath: [],
     });
   });
 });

@@ -2,11 +2,13 @@ jest.unmock('../ls');
 
 import ls from '../ls';
 import mockComponent from '../../__mocks__/component';
-import {map} from 'ramda';
+import {map, path, compose} from 'ramda';
 import {highlightedOutput, output as normalOutput} from '../../styles';
 
-const mapToName = map(output => output.props.children);
-const mapToStyle = map(output => output.props.style);
+const getChildren = path(['props', 'children']);
+
+const mapToName = compose(map(getChildren), getChildren);
+const mapToStyle = compose(map(path(['props', 'style'])), getChildren);
 
 describe('ls', () => {
   it('should show the directories properly', () => {

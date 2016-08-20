@@ -36,14 +36,14 @@ const ls = self => {
     filter(file => allPass([isChildren, hasSameRoot])(currentPath, file))
   );
 
-  const mapNormal = mapOutput(output);
-  const mapHighlight = mapOutput(highlightedOutput);
+  const mapFiles = mapOutput(output);
+  const mapDirs = mapOutput(highlightedOutput);
 
   return (
     <div>
       {sortAndConcat(
-        mapNormal(getFiles(files)),
-        mapHighlight(getFiles(directories))
+        mapFiles(getFiles(files)),
+        mapDirs(getFiles(directories))
       )}
     </div>
   );
