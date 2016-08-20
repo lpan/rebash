@@ -15,7 +15,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['', '.js', '.css'],
+    extensions: ['', '.js'],
     alias: {
       rebash: path.resolve(__dirname, './src/Terminal.js'),
     },
