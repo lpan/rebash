@@ -2,36 +2,35 @@ jest.unmock('../bindCommands');
 
 import bindCommands from '../bindCommands';
 import mockComponent from '../../__mocks__/component';
-import {pick, toPairs, forEach, compose} from 'ramda';
+import {pick} from 'ramda';
 
 const pickState = pick(['history', 'visibles']);
 
 describe('bindCommands()', () => {
-  const runCommands = compose(
-    forEach(command => { command[1](['a', 'b']); }),
-    toPairs
-  );
-
   it('should bind commands to "this" and update the state', () => {
     const component = mockComponent();
     const mockCommands = {
-      ls: (self, args) => `ls: ${args}`,
-      lmao: (self, args) => `lmao: ${args}`,
+      ls: (self, full) => full,
+      lmao: (self, full) => full,
     };
 
     const finalCommands = bindCommands(mockCommands, component);
-    runCommands(finalCommands);
+
+    finalCommands.ls('ls -l');
+    finalCommands.lmao('lmao');
 
     expect(pickState(component.state)).toEqual({
-      history: ['ls', 'lmao'],
+      history: ['ls -l', 'lmao'],
       visibles: [
         {
-          command: 'ls',
-          outputs: ['ls: a,b'],
+          command: 'ls -l',
+          currentPath: [],
+          outputs: ['ls -l'],
         },
         {
           command: 'lmao',
-          outputs: ['lmao: a,b'],
+          currentPath: [],
+          outputs: ['lmao'],
         },
       ],
     });
@@ -44,12 +43,13 @@ describe('bindCommands()', () => {
     };
 
     const finalCommands = bindCommands(mockCommands, component);
-    runCommands(finalCommands);
+    finalCommands.clear('clear');
 
     expect(pickState(component.state)).toEqual({
       history: ['clear'],
       visibles: [{
         command: 'clear',
+        currentPath: [],
         outputs: [],
       }],
     });
@@ -65,12 +65,13 @@ describe('bindCommands()', () => {
     };
 
     const finalCommands = bindCommands(mockCommands, component);
-    runCommands(finalCommands);
+    finalCommands.wait('wait');
 
     expect(pickState(component.state)).toEqual({
       history: ['wait'],
       visibles: [{
         command: 'wait',
+        currentPath: [],
         outputs: ['yo'],
       }],
     });

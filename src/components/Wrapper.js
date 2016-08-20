@@ -20,7 +20,7 @@ const onClickFocus = evt => {
   evt.currentTarget.lastChild.firstChild.lastChild.focus();
 };
 
-const Wrapper = ({visibles}) => (
+const Wrapper = ({visibles, currentPath}) => (
   <div
     style={styles.container}
     onClick={onClickFocus}
@@ -28,6 +28,7 @@ const Wrapper = ({visibles}) => (
     {renderOldCommands(visibles)}
     <Command
       key={visibles.length}
+      currentPath={currentPath}
     />
   </div>
 );

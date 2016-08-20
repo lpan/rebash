@@ -1,13 +1,15 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import {visibleType, commandsType} from '../utils/customPropTypes';
 import {
   compose, keys, contains, split, map, addIndex, cond, T, isNil, complement, always,
   head,
 } from 'ramda';
 
+const isDefined = complement(isNil);
+
 // extract {outputs}, returns [] if visible not defined
 const getOutputs = cond([
-  [complement(isNil), visible => visible.outputs],
+  [isDefined, visible => visible.outputs],
   [T, always([])],
 ]);
 
@@ -32,10 +34,21 @@ const onEnter = commands => evt => {
   }
 };
 
-const Command = ({visible}, {commands}) => (
+// if undefined currentPath implies it is an disabled input, we use visible
+// instead
+const getCurrentPath = (currentPath, visible) =>
+  currentPath || visible.currentPath;
+
+const joinPath = path => path.join('/');
+
+const renderPrompt = compose(joinPath, getCurrentPath);
+
+const Command = ({visible, currentPath}, {commands}) => (
   <div>
     <div>
-      <div>prompt</div>
+      <div>
+        {renderPrompt(currentPath, visible)}
+      </div>
       <input
         value={visible && visible.command}
         disabled={visible}
@@ -50,6 +63,7 @@ const Command = ({visible}, {commands}) => (
 
 Command.propTypes = {
   visible: visibleType,
+  currentPath: PropTypes.arrayOf(PropTypes.string),
 };
 
 Command.contextTypes = {

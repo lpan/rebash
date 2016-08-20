@@ -1,4 +1,4 @@
-import {always} from 'ramda';
+// TODO actually parses args
+const parseArgs = command => command;
 
-// TODO parse args to get options
-export default always;
+export default parseArgs;

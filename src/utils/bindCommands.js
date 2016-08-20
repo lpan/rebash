@@ -1,8 +1,8 @@
 import {isValidElement} from 'react';
 import parseArgs from './parseArgs';
 import {
-  assoc, append, reduce, compose, toPairs, last, flatten, type, equals, init,
-  anyPass,
+  assoc, append, reduce, compose, toPairs, flatten, type, equals, anyPass, lensProp,
+  over, lensIndex,
 } from 'ramda';
 
 /**
@@ -14,12 +14,13 @@ import {
  * @returns {[Obj]}, new 'visibles' that has 'newOutput' appended to outputs
  */
 const appendOutput = ({visibles}, newOutput) => {
-  const {outputs, command} = last(visibles);
-  const restVisibles = init(visibles);
+  const outputLens = lensProp('outputs');
+  const lastLens = lensIndex(-1);
 
   const appendNewOutput = compose(flatten, append(newOutput));
+  const updateLast = v => over(outputLens, appendNewOutput, v);
 
-  return [...restVisibles, {command, outputs: appendNewOutput(outputs)}];
+  return over(lastLens, updateLast, visibles);
 };
 
 /**
@@ -32,12 +33,12 @@ const appendOutput = ({visibles}, newOutput) => {
  * @returns {func}, modified function
  */
 const decorateSelf = ([commandName, commandFn], self) => command => {
-  const {history, visibles} = self.state;
+  const {history, visibles, currentPath} = self.state;
   const args = parseArgs(command);
 
   const newState = {
     history: [...history, command],
-    visibles: [...visibles, {command, outputs: []}],
+    visibles: [...visibles, {command, currentPath, outputs: []}],
   };
 
   self.setState(newState);
