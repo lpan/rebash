@@ -1,6 +1,10 @@
 import {
   split, isEmpty, complement, filter, init, map, keys, compose, uniq, concat,
+  append, chain, reduce, last,
 } from 'ramda';
+
+// [] represents root dir
+const appendRoot = append([]);
 
 const filterEmpty = filter(complement(isEmpty));
 
@@ -16,8 +20,16 @@ const mapToPath = map(splitPath);
 // mapToPath for fileDB
 const mapFileDir = compose(map(splitFilePath), keys);
 
+// add the parent dirs of the mapped dirs to the list
+const addParentDirs = chain(dir =>
+  reduce((accum, current) =>
+    append(append(current, last(accum)), accum), [], dir)
+);
+
 // get file paths
-const mapFilePath = compose(mapToPath, keys);
+const getFiles = compose(uniq, mapToPath, keys);
+
+const getDirs = compose(uniq, appendRoot, addParentDirs, uniq, concat);
 
 /**
  * Create a list that contains the absolute paths of all the dirs in the
@@ -29,10 +41,8 @@ const mapFilePath = compose(mapToPath, keys);
  * @returns {files: [[String]], directories: [[String]]}
  */
 const initFileSystem = (dirList, filesDB) => {
-  const files = mapFilePath(filesDB);
-  const directories = uniq(
-    concat(mapToPath(dirList), mapFileDir(filesDB))
-  );
+  const files = getFiles(filesDB);
+  const directories = getDirs(mapToPath(dirList), mapFileDir(filesDB));
 
   return {files, directories};
 };

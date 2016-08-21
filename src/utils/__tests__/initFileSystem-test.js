@@ -1,25 +1,32 @@
 jest.unmock('../initFileSystem');
 
 import initFileSystem from '../initFileSystem';
+import {sortFs} from '../testUtils';
+import {compose} from 'ramda';
+
+const newInit = compose(sortFs, initFileSystem);
 
 describe('initFileSystem()', () => {
   it('splits dir path strings and eliminate invalids', () => {
-    const paths = initFileSystem([
+    const paths = newInit([
       '/home/lpan',
       '/etc/nginx/',
     ], {});
 
     expect(paths).toEqual({
       directories: [
-        ['home', 'lpan'],
+        [],
+        ['etc'],
+        ['home'],
         ['etc', 'nginx'],
+        ['home', 'lpan'],
       ],
       files: [],
     });
   });
 
   it('creates dir according to filesDB', () => {
-    const paths = initFileSystem([], {
+    const paths = newInit([], {
       '/home/lpan/secret.txt': 'ayy lmao',
       '/etc/nginx/nginx.conf': 'dank mr. goose',
       '/lmao.js': 'ayy mr.goose',
@@ -27,20 +34,22 @@ describe('initFileSystem()', () => {
 
     expect(paths).toEqual({
       directories: [
-        ['home', 'lpan'],
-        ['etc', 'nginx'],
         [],
+        ['etc'],
+        ['home'],
+        ['etc', 'nginx'],
+        ['home', 'lpan'],
       ],
       files: [
-        ['home', 'lpan', 'secret.txt'],
-        ['etc', 'nginx', 'nginx.conf'],
         ['lmao.js'],
+        ['etc', 'nginx', 'nginx.conf'],
+        ['home', 'lpan', 'secret.txt'],
       ],
     });
   });
 
   it('eliminate duplicates', () => {
-    const paths = initFileSystem([
+    const paths = newInit([
       '/home/lpan',
       '/etc/nginx/',
     ], {
@@ -50,12 +59,15 @@ describe('initFileSystem()', () => {
 
     expect(paths).toEqual({
       directories: [
-        ['home', 'lpan'],
+        [],
+        ['etc'],
+        ['home'],
         ['etc', 'nginx'],
+        ['home', 'lpan'],
       ],
       files: [
-        ['home', 'lpan', 'lmao.js'],
         ['etc', 'nginx', 'goose.config'],
+        ['home', 'lpan', 'lmao.js'],
       ],
     });
   });

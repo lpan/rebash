@@ -2,6 +2,7 @@ jest.unmock('../Terminal');
 
 import React from 'react';
 import Terminal from '../Terminal';
+import {sortFs} from '../utils/testUtils';
 import {shallow} from 'enzyme';
 
 describe('The <Terminal /> component', () => {
@@ -15,11 +16,16 @@ describe('The <Terminal /> component', () => {
       directories: ['/home/lpan'],
     });
 
+    // sort file system first
+    wrapper.setState({fileSystem: sortFs(wrapper.state().fileSystem)});
+
     expect(wrapper.state()).toEqual({
       history: [],
       visibles: [],
       fileSystem: {
         directories: [
+          [],
+          ['home'],
           ['home', 'lpan'],
         ],
         files: [
