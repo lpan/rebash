@@ -1,8 +1,8 @@
 import React from 'react';
 import {output, highlightedOutput} from '../styles';
 import {
-  slice, map, filter, compose, addIndex, equals, allPass, last, concat, sortBy,
-  path,
+  map, filter, compose, addIndex, equals, last, concat, sortBy,
+  path, init,
 } from 'ramda';
 
 // map files/dirs to virtual dom nodes
@@ -10,16 +10,6 @@ const mapOutput = style => addIndex(map)((file, i) =>
   <span key={i} style={style}>
     {file}
   </span>
-);
-
-const hasSameRoot = (currentPath, file) => equals(
-  slice(0, currentPath.length, file),
-  currentPath
-);
-
-const isChildren = (currentPath, file) => equals(
-  file.length,
-  currentPath.length + 1
 );
 
 // sort final span tags by alphabetical order
@@ -33,7 +23,7 @@ const ls = self => {
 
   const getFiles = compose(
     map(last),
-    filter(file => allPass([isChildren, hasSameRoot])(currentPath, file))
+    filter(file => equals(currentPath, init(file)))
   );
 
   const mapFiles = mapOutput(output);
