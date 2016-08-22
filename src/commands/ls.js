@@ -17,7 +17,7 @@ const sortByName = sortBy(path(['props', 'children']));
 
 const sortAndConcat = compose(sortByName, concat);
 
-const ls = self => {
+const ls = (args, self) => {
   const {currentPath, fileSystem} = self.state;
   const {directories, files} = fileSystem;
 

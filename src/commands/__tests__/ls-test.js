@@ -26,7 +26,7 @@ describe('ls', () => {
     };
 
     const component = mockComponent(current, fs);
-    const output = ls(component);
+    const output = ls([], component);
 
     expect(mapToName(output)).toEqual([
       'dank.php',
@@ -55,7 +55,7 @@ describe('ls', () => {
     };
 
     const component = mockComponent(current, fs);
-    const output = ls(component);
+    const output = ls([], component);
 
     expect(mapToName(output)).toEqual([
       'bank.cpp',
@@ -89,7 +89,7 @@ describe('ls', () => {
     };
 
     const component = mockComponent(current, fs);
-    const output = ls(component);
+    const output = ls([], component);
 
     expect(mapToName(output)).toEqual([
       'etc',

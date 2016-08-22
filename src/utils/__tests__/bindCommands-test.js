@@ -10,8 +10,8 @@ describe('bindCommands()', () => {
   it('should bind commands to "this" and update the state', () => {
     const component = mockComponent();
     const mockCommands = {
-      ls: (self, full) => full,
-      lmao: (self, full) => full,
+      ls: args => args,
+      lmao: args => args,
     };
 
     const finalCommands = bindCommands(mockCommands, component);
