@@ -1,15 +1,10 @@
+import splitPath from './splitPath';
 import {
-  split, isEmpty, complement, filter, init, map, keys, compose, uniq, concat,
-  append, chain, reduce, last,
+  init, map, keys, compose, uniq, concat, append, chain, reduce, last,
 } from 'ramda';
 
 // [] represents root dir
 const appendRoot = append([]);
-
-const filterEmpty = filter(complement(isEmpty));
-
-// split a path string
-const splitPath = compose(filterEmpty, split('/'));
 
 // If it is a file, we get rid of the filename to get dir path
 const splitFilePath = compose(init, splitPath);
