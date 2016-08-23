@@ -5,6 +5,7 @@ import {map, addIndex} from 'ramda';
 
 const styles = {
   container: {
+    margin: '30px 30px',
     height: '400px',
     width: '400px',
     backgroundColor: 'black',
