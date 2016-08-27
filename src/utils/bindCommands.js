@@ -44,8 +44,8 @@ const decorateSelf = ([commandName, commandFn], self) => command => {
   self.setState(newState);
 
   const result = commandFn(args, self);
-  const isString = compose(equals('String'), type);
 
+  const isString = compose(equals('String'), type);
   const isValidOutput = anyPass([isValidElement, isString]);
 
   if (isValidOutput(result)) {

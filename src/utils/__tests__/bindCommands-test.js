@@ -10,8 +10,8 @@ describe('bindCommands()', () => {
   it('should bind commands to "this" and update the state', () => {
     const component = mockComponent();
     const mockCommands = {
-      ls: args => args,
-      lmao: args => args,
+      ls: () => 'ls',
+      lmao: () => 'lmao',
     };
 
     const finalCommands = bindCommands(mockCommands, component);
@@ -25,7 +25,7 @@ describe('bindCommands()', () => {
         {
           command: 'ls -l',
           currentPath: [],
-          outputs: ['ls -l'],
+          outputs: ['ls'],
         },
         {
           command: 'lmao',
