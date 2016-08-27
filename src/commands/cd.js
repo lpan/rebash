@@ -1,10 +1,8 @@
 import splitPath from '../utils/splitPath';
+import {isAbsolutePath} from '../utils/validations';
 import {
-  always, equals, cond, init, T, flip, append, contains,
+  always, equals, cond, init, T, flip, append, contains, head,
 } from 'ramda';
-
-// if the string is /ayy/lmao we assume its an absolute path
-const isAbsolutePath = contains('/');
 
 const getPath = currentPath => cond([
   [equals('.'), always(currentPath)],
@@ -19,8 +17,7 @@ const getPath = currentPath => cond([
  * options: none
  */
 const cd = (args, self) => {
-  const {targets} = args;
-  const [target] = targets;
+  const target = head(args.targets);
   const {currentPath, fileSystem} = self.state;
 
   const newPath = getPath(currentPath)(target);
