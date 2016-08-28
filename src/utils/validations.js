@@ -4,7 +4,7 @@ import {
 
 const notEmpty = complement(isEmpty);
 
-const isString = compose(equals('String'), type);
+export const isString = compose(equals('String'), type);
 
 export const isValidName = allPass([isString, notEmpty]);
 

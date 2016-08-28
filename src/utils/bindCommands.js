@@ -1,8 +1,9 @@
 import {isValidElement} from 'react';
+import {isString} from './validations';
 import parseArgs from './parseArgs';
 import {
-  assoc, append, reduce, compose, toPairs, flatten, type, equals, anyPass, lensProp,
-  over, lensIndex,
+  assoc, append, reduce, compose, toPairs, flatten, type, anyPass, lensProp, over,
+  lensIndex,
 } from 'ramda';
 
 /**
@@ -44,8 +45,6 @@ const decorateSelf = ([commandName, commandFn], self) => command => {
   self.setState(newState);
 
   const result = commandFn(args, self);
-
-  const isString = compose(equals('String'), type);
   const isValidOutput = anyPass([isValidElement, isString]);
 
   if (isValidOutput(result)) {
