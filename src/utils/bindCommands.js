@@ -44,7 +44,17 @@ const decorateSelf = ([commandName, commandFn], self) => command => {
 
   self.setState(newState);
 
-  const result = commandFn(args, self);
+  // catch and log the error
+  let result;
+  try {
+    result = commandFn(args, self);
+  } catch ({message}) {
+    self.setState({
+      visibles: appendOutput(newState, message),
+    });
+    return;
+  }
+
   const isValidOutput = anyPass([isValidElement, isString]);
 
   if (isValidOutput(result)) {

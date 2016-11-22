@@ -1,9 +1,12 @@
 import React from 'react';
 import {output, highlightedOutput} from '../styles';
+import findFilters from '../utils/findFilters';
 import {
   map, filter, compose, addIndex, equals, last, concat, sortBy,
-  path, init,
+  path, init, identity, complement, head,
 } from 'ramda';
+
+const notEquals = complement(equals);
 
 // map files/dirs to virtual dom nodes
 const mapOutput = style => addIndex(map)((file, i) =>
@@ -15,7 +18,28 @@ const mapOutput = style => addIndex(map)((file, i) =>
 // sort final span tags by alphabetical order
 const sortByName = sortBy(path(['props', 'children']));
 
-const sortAndConcat = compose(sortByName, concat);
+const getChildren = path(['props', 'children']);
+
+/*
+ * Option filters
+ */
+
+// Not show files/dirs starting with a '.'
+const filterHidden = filter(compose(notEquals('.'), head, getChildren));
+
+// TODO: actually prints detailed outputs
+const formatDetail = identity;
+
+const options = {
+  flags: {
+    none: filterHidden,
+    a: identity,
+    l: compose(formatDetail, filterHidden),
+    al: formatDetail,
+  },
+  options: {
+  },
+};
 
 const ls = (args, self) => {
   const {currentPath, fileSystem} = self.state;
@@ -31,7 +55,7 @@ const ls = (args, self) => {
 
   return (
     <div>
-      {sortAndConcat(
+      {compose(sortByName, findFilters(options, args), concat)(
         mapFiles(getFiles(files)),
         mapDirs(getFiles(directories))
       )}
