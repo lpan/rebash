@@ -59,6 +59,6 @@
     ]
   },
   "dependencies": {
-    "ramda": "^0.22.0"
+    "ramda": "^0.23.0"
   }
 }

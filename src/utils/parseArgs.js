@@ -10,7 +10,7 @@ const toArray = flip(append)([]);
 
 const parseFlag = compose(objOf('flags'), split(''), tail);
 
-const parseOption = compose(objOf('options'), toArray, drop(2));
+const parseOption = compose(objOf('fulls'), toArray, drop(2));
 
 const parseTarget = compose(objOf('targets'), toArray);
 
@@ -24,7 +24,7 @@ const mergeArg = mergeWith(concat);
 
 const formatArgs = reduce((accum, current) =>
   mergeArg(accum, classifyArg(current)),
-  {options: [], flags: [], targets: []}
+  {fulls: [], flags: [], targets: []}
 );
 
 const getArgs = compose(tail, split(' '));
@@ -33,11 +33,11 @@ const sortArgs = map(args => args.sort());
 
 /**
  * Parse raw command and returns an args object
- * 'ls -a -l --lmao' -> {options: [], flags: ['a', 'l'], options: ['lmao']}
+ * 'ls -a -l --lmao' -> {fulls: [], flags: ['a', 'l'], fulls: ['lmao']}
  *
  * @param {String} Command - raw command from user
  *
- * @returns {obj} - {options: [], flags: [], targets: []}
+ * @returns {obj} - {fulls: [], flags: [], targets: []}
  */
 const parseArgs = compose(sortArgs, formatArgs, getArgs);
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import {output, highlightedOutput} from '../styles';
-import findFilters from '../utils/findFilters';
+import handleOptions from '../utils/handleOptions';
+import {filterEmpty} from '../utils/splitPath';
 import {
   map, filter, compose, addIndex, equals, last, concat, sortBy,
   path, init, identity, complement, head,
@@ -9,8 +10,8 @@ import {
 const notEquals = complement(equals);
 
 // map files/dirs to virtual dom nodes
-const mapOutput = style => addIndex(map)((file, i) =>
-  <span key={i} style={style}>
+const mapOutput = (style, key) => addIndex(map)((file, i) =>
+  <span key={`${key}-${i}`} style={style}>
     {file}
   </span>
 );
@@ -18,46 +19,55 @@ const mapOutput = style => addIndex(map)((file, i) =>
 // sort final span tags by alphabetical order
 const sortByName = sortBy(path(['props', 'children']));
 
-const getChildren = path(['props', 'children']);
-
 /*
  * Option filters
  */
 
-// Not show files/dirs starting with a '.'
-const filterHidden = filter(compose(notEquals('.'), head, getChildren));
+// ls without the '-a' flag
+const filterHidden = filter(compose(notEquals('.'), head));
 
+// ls with the '-l' flag
 // TODO: actually prints detailed outputs
 const formatDetail = identity;
 
 const options = {
-  flags: {
+  handlers: {
     none: filterHidden,
     a: identity,
     l: compose(formatDetail, filterHidden),
+    // in alphabetical order
     al: formatDetail,
   },
-  options: {
+  fulls: {
+    all: 'a',
   },
 };
 
+// get a list of files under current dir
+const getFiles = currentPath => compose(
+  map(last),
+  filterEmpty,
+  filter(file => equals(currentPath, init(file)))
+);
+
 const ls = (args, self) => {
   const {currentPath, fileSystem} = self.state;
-  const {directories, files} = fileSystem;
-
-  const getFiles = compose(
-    map(last),
-    filter(file => equals(currentPath, init(file)))
+  const {directories, files} = map(
+    compose(handleOptions(options, args), getFiles(currentPath)),
+    fileSystem
   );
 
-  const mapFiles = mapOutput(output);
-  const mapDirs = mapOutput(highlightedOutput);
+  const mapFiles = mapOutput(output, 'files');
+  const mapDirs = mapOutput(highlightedOutput, 'dirs');
 
   return (
     <div>
-      {compose(sortByName, findFilters(options, args), concat)(
-        mapFiles(getFiles(files)),
-        mapDirs(getFiles(directories))
+      {compose(
+        sortByName,
+        concat
+      )(
+        mapFiles(files),
+        mapDirs(directories)
       )}
     </div>
   );

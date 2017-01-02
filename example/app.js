@@ -8,7 +8,9 @@ const commands = {
 };
 
 const files = {
+  '/test.txt': 'I am a test',
   '/home/lawrence/greet.txt': 'Hello',
+  '.config/nvim/init.vim': 'lmao',
 };
 
 const directories = [
