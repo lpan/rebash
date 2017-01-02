@@ -8,7 +8,7 @@ describe('parseArgs()', () => {
     const args = parseArgs(command);
 
     expect(args).toEqual({
-      options: ['goose-mode'],
+      fulls: ['goose-mode'],
       flags: ['l'],
       targets: ['/home/lawrence'],
     });
@@ -19,7 +19,7 @@ describe('parseArgs()', () => {
     const args = parseArgs(command);
 
     expect(args).toEqual({
-      options: [],
+      fulls: [],
       flags: ['a', 'l'],
       targets: ['lmao'],
     });
@@ -30,7 +30,7 @@ describe('parseArgs()', () => {
     const args = parseArgs(command);
 
     expect(args).toEqual({
-      options: ['asian', 'bsian', 'csian'],
+      fulls: ['asian', 'bsian', 'csian'],
       flags: [],
       targets: ['paninos'],
     });
