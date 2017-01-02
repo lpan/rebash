@@ -1,6 +1,6 @@
 import {
   split, take, T, equals, tail, compose, reduce, cond, objOf, head, mergeWith,
-  drop, concat, flip, append,
+  drop, concat, flip, append, map,
 } from 'ramda';
 
 // need to make it an array so we can use concat
@@ -29,6 +29,8 @@ const formatArgs = reduce((accum, current) =>
 
 const getArgs = compose(tail, split(' '));
 
+const sortArgs = map(args => args.sort());
+
 /**
  * Parse raw command and returns an args object
  * 'ls -a -l --lmao' -> {options: [], flags: ['a', 'l'], options: ['lmao']}
@@ -37,6 +39,6 @@ const getArgs = compose(tail, split(' '));
  *
  * @returns {obj} - {options: [], flags: [], targets: []}
  */
-const parseArgs = compose(formatArgs, getArgs);
+const parseArgs = compose(sortArgs, formatArgs, getArgs);
 
 export default parseArgs;

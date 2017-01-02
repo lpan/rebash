@@ -24,4 +24,15 @@ describe('parseArgs()', () => {
       targets: ['lmao'],
     });
   });
+
+  it('sorts multiple flags', () => {
+    const command = 'ls --bsian --csian --asian paninos';
+    const args = parseArgs(command);
+
+    expect(args).toEqual({
+      options: ['asian', 'bsian', 'csian'],
+      flags: [],
+      targets: ['paninos'],
+    });
+  });
 });
