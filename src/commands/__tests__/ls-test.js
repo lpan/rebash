@@ -26,7 +26,7 @@ describe('ls', () => {
     };
 
     const component = mockComponent(current, fs);
-    const output = ls([], component);
+    const output = ls({fulls: [], flags: []}, component);
 
     expect(mapToName(output)).toEqual([
       'dank.php',
@@ -44,6 +44,7 @@ describe('ls', () => {
     const fs = {
       directories: [
         ['home'],
+        ['.config'],
         ['home', 'mr-goose'],
         ['home', 'mr-goose', 'dank'],
       ],
@@ -55,7 +56,7 @@ describe('ls', () => {
     };
 
     const component = mockComponent(current, fs);
-    const output = ls([], component);
+    const output = ls({fulls: [], flags: []}, component);
 
     expect(mapToName(output)).toEqual([
       'bank.cpp',
@@ -79,6 +80,7 @@ describe('ls', () => {
       directories: [
         ['home'],
         ['home', 'mr-goose'],
+        ['.config'],
         ['etc'],
         ['etc', 'nginx'],
         ['zzz'],
@@ -89,7 +91,7 @@ describe('ls', () => {
     };
 
     const component = mockComponent(current, fs);
-    const output = ls([], component);
+    const output = ls({fulls: [], flags: []}, component);
 
     expect(mapToName(output)).toEqual([
       'etc',
@@ -99,6 +101,43 @@ describe('ls', () => {
     ]);
 
     expect(mapToStyle(output)).toEqual([
+      highlightedOutput,
+      highlightedOutput,
+      normalOutput,
+      highlightedOutput,
+    ]);
+  });
+
+  it('should display hidden files with -a flag', () => {
+    // root current is represented as an empty array
+    const current = [];
+    const fs = {
+      directories: [
+        ['home'],
+        ['home', 'mr-goose'],
+        ['etc'],
+        ['etc', 'nginx'],
+        ['zzz'],
+        ['.config'],
+      ],
+      files: [
+        ['virus.py'],
+      ],
+    };
+
+    const component = mockComponent(current, fs);
+    const output = ls({fulls: [], flags: ['a']}, component);
+
+    expect(mapToName(output)).toEqual([
+      '.config',
+      'etc',
+      'home',
+      'virus.py',
+      'zzz',
+    ]);
+
+    expect(mapToStyle(output)).toEqual([
+      highlightedOutput,
       highlightedOutput,
       highlightedOutput,
       normalOutput,
