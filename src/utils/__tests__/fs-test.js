@@ -1,8 +1,8 @@
 jest.unmock('../fs');
 
-import {initFileSystem, addDir, getMissingParents} from '../fs';
-import {sortFs} from '../testUtils';
 import {compose} from 'ramda';
+import {initFileSystem, addDir, removeDir} from '../fs';
+import {sortFs} from '../testUtils';
 
 const newInit = compose(sortFs, initFileSystem);
 
@@ -12,7 +12,7 @@ describe('fs helpers', () => {
       const paths = newInit([
         '/home/lpan',
         '/etc/nginx/',
-      ], {});
+      ], {}, ['home', 'lpan']);
 
       expect(paths).toEqual({
         directories: [
@@ -31,7 +31,7 @@ describe('fs helpers', () => {
         '/home/lpan/secret.txt': 'ayy lmao',
         '/etc/nginx/nginx.conf': 'dank mr. goose',
         '/lmao.js': 'ayy mr.goose',
-      });
+      }, ['home', 'lpan']);
 
       expect(paths).toEqual({
         directories: [
@@ -56,7 +56,7 @@ describe('fs helpers', () => {
       ], {
         '/home/lpan/lmao.js': null,
         '/etc/nginx/goose.config': 'goose',
-      });
+      }, ['home', 'lpan']);
 
       expect(paths).toEqual({
         directories: [
@@ -72,47 +72,34 @@ describe('fs helpers', () => {
         ],
       });
     });
+
+    it('adds home dir', () => {
+      const paths = newInit([
+        '/home/lpan',
+        '/etc/nginx/',
+      ], {}, ['home', 'goose']);
+
+      expect(paths).toEqual({
+        directories: [
+          [],
+          ['etc'],
+          ['home'],
+          ['etc', 'nginx'],
+          ['home', 'goose'],
+          ['home', 'lpan'],
+        ],
+        files: [],
+      });
+    });
   });
 
   describe('addDir()', () => {
-    it('adds dir where target is a relative path', () => {
-      const fs = newInit([
-        '/home/lpan',
-      ], {});
-
-      expect(sortFs(addDir(fs, 'docs', ['home', 'lpan']))).toEqual({
-        directories: [
-          [],
-          ['home'],
-          ['home', 'lpan'],
-          ['home', 'lpan', 'docs'],
-        ],
-        files: [],
-      });
-    });
-
-    it('does nothing if dir specified by relative path already exists', () => {
-      const fs = newInit([
-        '/home/lpan/docs',
-      ], {});
-
-      expect(sortFs(addDir(fs, 'docs', ['home', 'lpan']))).toEqual({
-        directories: [
-          [],
-          ['home'],
-          ['home', 'lpan'],
-          ['home', 'lpan', 'docs'],
-        ],
-        files: [],
-      });
-    });
-
     it('creates missing parent dirs when absolute path is supplied', () => {
       const fs = newInit([
         '/home/lpan/',
-      ], {});
+      ], {}, ['home', 'lpan']);
 
-      expect(sortFs(addDir(fs, '/home/goose/docs', ['home', 'lpan']))).toEqual({
+      expect(sortFs(addDir(['home', 'goose', 'docs'], fs))).toEqual({
         directories: [
           [],
           ['home'],
@@ -123,13 +110,32 @@ describe('fs helpers', () => {
         files: [],
       });
 
-      expect(sortFs(addDir(fs, '/home/goose/docs', ['home', 'lpan']))).toEqual({
+      expect(sortFs(addDir(['home', 'goose', 'docs'], fs))).toEqual({
         directories: [
           [],
           ['home'],
           ['home', 'goose'],
           ['home', 'lpan'],
           ['home', 'goose', 'docs'],
+        ],
+        files: [],
+      });
+    });
+  });
+
+  describe('removeDir()', () => {
+    it('removes dir recursively', () => {
+      const fs = newInit([
+        '/home/lpan/docs',
+      ], {
+        '/home/lpan/docs/lmao.txt': 'ayy lmao',
+      }, ['home', 'lpan']);
+
+      expect(sortFs(removeDir(['home', 'lpan', 'docs'], fs))).toEqual({
+        directories: [
+          [],
+          ['home'],
+          ['home', 'lpan'],
         ],
         files: [],
       });

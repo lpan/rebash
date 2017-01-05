@@ -1,8 +1,8 @@
-import splitPath from '../utils/splitPath';
-import {isAbsolutePath} from '../utils/validations';
 import {
   always, equals, cond, init, T, flip, append, contains, head,
 } from 'ramda';
+import splitPath from '../utils/splitPath';
+import {isAbsolutePath} from '../utils/validations';
 
 const getPath = (currentPath, homePath) => cond([
   [equals('~'), always(homePath)],

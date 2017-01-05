@@ -1,10 +1,10 @@
 import React, {Component, PropTypes} from 'react';
+import {merge, pick} from 'ramda';
 import Wrapper from './components/Wrapper';
 import {initFileSystem} from './utils/fs';
 import bindCommands from './utils/bindCommands';
 import defaultCommands from './commands';
 import {commandsType} from './utils/customPropTypes';
-import {merge, pick} from 'ramda';
 
 const mergeDefault = merge(defaultCommands);
 
@@ -16,18 +16,21 @@ class Terminal extends Component {
     super(props);
 
     const {initialPath, directories, files, username} = props;
+    const homePath = username === 'root' ? [username] : ['home', username];
+
     this.state = {
+      username,
       // A list of commands <String> can be access with up-arrow
       history: [],
       // An ordered list of {command: '', outputs: []} visible on to the user
       visibles: [],
       // {directories: [], files: []}
-      fileSystem: initFileSystem(directories, files, username),
+      fileSystem: initFileSystem(directories, files, homePath),
       // look up a file's content using its absolute path as key
       files,
       // an array representation of current path
       currentPath: initialPath,
-      homePath: username ? ['home', username] : [],
+      homePath,
     };
   }
 
@@ -58,6 +61,7 @@ Terminal.propTypes = {
 };
 
 Terminal.defaultProps = {
+  username: 'root',
   initialPath: [],
   files: {},
   directories: [],
