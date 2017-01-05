@@ -33,7 +33,7 @@ const sortArgs = map(args => args.sort());
 
 /**
  * Parse raw command and returns an args object
- * 'ls -a -l --lmao' -> {fulls: [], flags: ['a', 'l'], fulls: ['lmao']}
+ * 'ls -a -l --lmao' -> {targets: [], flags: ['a', 'l'], fulls: ['lmao']}
  *
  * @param {String} Command - raw command from user
  *

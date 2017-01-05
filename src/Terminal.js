@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import Wrapper from './components/Wrapper';
-import initFileSystem from './utils/initFileSystem';
+import {initFileSystem} from './utils/fs';
 import bindCommands from './utils/bindCommands';
 import defaultCommands from './commands';
 import {commandsType} from './utils/customPropTypes';
@@ -15,18 +15,19 @@ class Terminal extends Component {
   constructor(props) {
     super(props);
 
-    const {initialPath, directories, files} = props;
+    const {initialPath, directories, files, username} = props;
     this.state = {
       // A list of commands <String> can be access with up-arrow
       history: [],
       // An ordered list of {command: '', outputs: []} visible on to the user
       visibles: [],
       // {directories: [], files: []}
-      fileSystem: initFileSystem(directories, files),
+      fileSystem: initFileSystem(directories, files, username),
       // look up a file's content using its absolute path as key
       files,
       // an array representation of current path
       currentPath: initialPath,
+      homePath: username ? ['home', username] : [],
     };
   }
 
@@ -47,6 +48,7 @@ Terminal.childContextTypes = {
 };
 
 Terminal.propTypes = {
+  username: PropTypes.string,
   // a list of directory paths
   directories: PropTypes.arrayOf(PropTypes.string),
   // file content mapped to file absolute path
