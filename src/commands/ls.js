@@ -1,11 +1,11 @@
 import React from 'react';
-import {output, highlightedOutput} from '../styles';
-import handleOptions from '../utils/handleOptions';
-import {filterEmpty} from '../utils/splitPath';
 import {
   map, filter, compose, addIndex, equals, last, concat, sortBy,
   path, init, identity, complement, head,
 } from 'ramda';
+import {output, highlightedOutput} from '../styles';
+import handleOptions from '../utils/handleOptions';
+import {filterEmpty} from '../utils/pathUtils';
 
 const notEquals = complement(equals);
 
@@ -13,8 +13,7 @@ const notEquals = complement(equals);
 const mapOutput = (style, key) => addIndex(map)((file, i) =>
   <span key={`${key}-${i}`} style={style}>
     {file}
-  </span>
-);
+  </span>);
 
 // sort final span tags by alphabetical order
 const sortByName = sortBy(path(['props', 'children']));

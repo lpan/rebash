@@ -1,12 +1,9 @@
 import {
   init, map, keys, compose, uniq, concat, append, chain, reduce, last,
-  mergeWith, join, filter, flip, contains, complement, equals, slice,
-  length, merge, evolve, head, toPairs, fromPairs,
+  filter, flip, contains, complement, equals, slice, length, evolve,
+  head, toPairs, fromPairs, assoc, dissoc,
 } from 'ramda';
-import splitPath from './splitPath';
-import {isAbsolutePath, isDir} from './validations';
-
-const joinPath = compose(concat('/'), join('/'));
+import {splitPath, joinPath} from './pathUtils';
 
 // [] represents root dir
 const appendRoot = append([]);
@@ -49,8 +46,22 @@ const getMissingParents = (target, {directories}) =>
  *
  */
 export const addDir = (target, fs) =>
-  mergeWith(concat, {
-    directories: getMissingParents(target, fs),
+  evolve({
+    directories: concat(getMissingParents(target, fs)),
+  }, fs);
+
+/**
+ * add a file to fs and fileDB
+ * Given the file's parent exists and no duplicates
+ * @param {path} target - absolute path of a file
+ * @param {obj} fs - the fs object
+ *
+ * @returns {obj} new fileSystem object
+ */
+export const addFile = (target, fs) =>
+  evolve({
+    files: append(target),
+    filesDB: assoc(joinPath(target), null),
   }, fs);
 
 /**
@@ -84,6 +95,12 @@ export const removeDir = (target, fs) => {
 
   return evolve(transformation, fs);
 };
+
+export const removeFile = (target, fs) =>
+  evolve({
+    files: filter(complement(equals)(target)),
+    filesDB: dissoc(joinPath(target)),
+  }, fs);
 
 /**
  * Create a list that contains the absolute paths of all the dirs in the

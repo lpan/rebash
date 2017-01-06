@@ -1,7 +1,7 @@
 jest.unmock('../fs');
 
 import {compose} from 'ramda';
-import {initFileSystem, addDir, removeDir} from '../fs';
+import {initFileSystem, addDir, removeDir, addFile, removeFile} from '../fs';
 import {sortFs} from '../testUtils';
 
 const newInit = compose(sortFs, initFileSystem);
@@ -151,6 +151,54 @@ describe('fs helpers', () => {
           [],
           ['home'],
           ['home', 'lpan'],
+        ],
+        files: [
+          ['home', 'goose.txt'],
+        ],
+        filesDB: {
+          '/home/goose.txt': 'dank mr. goose',
+        },
+      });
+    });
+  });
+
+  describe('addFile()', () => {
+    it('should add file to both files and filesDB', () => {
+      const fs = newInit([
+        '/home/lpan/',
+      ], {}, ['home', 'lpan']);
+
+      expect(sortFs(addFile(['home', 'goose.txt'], fs))).toEqual({
+        directories: [
+          [],
+          ['home'],
+          ['home', 'lpan'],
+        ],
+        files: [
+          ['home', 'goose.txt'],
+        ],
+        filesDB: {
+          '/home/goose.txt': null,
+        },
+      });
+    });
+  });
+
+  describe('removeFile()', () => {
+    it('removes a file from files and filesDB', () => {
+      const fs = newInit([
+        '/home/lpan/docs',
+      ], {
+        '/home/goose.txt': 'dank mr. goose',
+        '/home/lpan/docs/lmao.txt': 'ayy lmao',
+      }, ['home', 'lpan']);
+
+      expect(sortFs(removeFile(['home', 'lpan', 'docs', 'lmao.txt'], fs))).toEqual({
+        directories: [
+          [],
+          ['home'],
+          ['home', 'lpan'],
+          ['home', 'lpan', 'docs'],
         ],
         files: [
           ['home', 'goose.txt'],
