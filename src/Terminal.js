@@ -26,8 +26,6 @@ class Terminal extends Component {
       visibles: [],
       // {directories: [], files: []}
       fileSystem: initFileSystem(directories, files, homePath),
-      // look up a file's content using its absolute path as key
-      files,
       // an array representation of current path
       currentPath: initialPath,
       homePath,

@@ -22,10 +22,12 @@ describe('The <Terminal /> component', () => {
     expect(wrapper.state()).toEqual({
       history: [],
       visibles: [],
+      username: 'root',
       fileSystem: {
         directories: [
           [],
           ['home'],
+          ['root'],
           ['home', 'lpan'],
         ],
         files: [
@@ -34,6 +36,7 @@ describe('The <Terminal /> component', () => {
       },
       files: {'/home/lpan/lmao.js': null},
       currentPath: [],
+      homePath: ['root'],
     });
   });
 });

@@ -23,6 +23,7 @@ describe('fs helpers', () => {
           ['home', 'lpan'],
         ],
         files: [],
+        filesDB: {},
       });
     });
 
@@ -46,6 +47,11 @@ describe('fs helpers', () => {
           ['etc', 'nginx', 'nginx.conf'],
           ['home', 'lpan', 'secret.txt'],
         ],
+        filesDB: {
+          '/home/lpan/secret.txt': 'ayy lmao',
+          '/etc/nginx/nginx.conf': 'dank mr. goose',
+          '/lmao.js': 'ayy mr.goose',
+        },
       });
     });
 
@@ -70,6 +76,10 @@ describe('fs helpers', () => {
           ['etc', 'nginx', 'goose.config'],
           ['home', 'lpan', 'lmao.js'],
         ],
+        filesDB: {
+          '/home/lpan/lmao.js': null,
+          '/etc/nginx/goose.config': 'goose',
+        },
       });
     });
 
@@ -89,6 +99,7 @@ describe('fs helpers', () => {
           ['home', 'lpan'],
         ],
         files: [],
+        filesDB: {},
       });
     });
   });
@@ -108,6 +119,7 @@ describe('fs helpers', () => {
           ['home', 'goose', 'docs'],
         ],
         files: [],
+        filesDB: {},
       });
 
       expect(sortFs(addDir(['home', 'goose', 'docs'], fs))).toEqual({
@@ -119,6 +131,7 @@ describe('fs helpers', () => {
           ['home', 'goose', 'docs'],
         ],
         files: [],
+        filesDB: {},
       });
     });
   });
@@ -128,7 +141,9 @@ describe('fs helpers', () => {
       const fs = newInit([
         '/home/lpan/docs',
       ], {
+        '/home/goose.txt': 'dank mr. goose',
         '/home/lpan/docs/lmao.txt': 'ayy lmao',
+        '/home/lpan/docs/gg/aylmao.txt': 'ayyyyyyyyyy lmao',
       }, ['home', 'lpan']);
 
       expect(sortFs(removeDir(['home', 'lpan', 'docs'], fs))).toEqual({
@@ -137,7 +152,12 @@ describe('fs helpers', () => {
           ['home'],
           ['home', 'lpan'],
         ],
-        files: [],
+        files: [
+          ['home', 'goose.txt'],
+        ],
+        filesDB: {
+          '/home/goose.txt': 'dank mr. goose',
+        },
       });
     });
   });

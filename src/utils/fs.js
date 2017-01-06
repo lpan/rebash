@@ -1,7 +1,7 @@
 import {
   init, map, keys, compose, uniq, concat, append, chain, reduce, last,
   mergeWith, join, filter, flip, contains, complement, equals, slice,
-  length, merge,
+  length, merge, evolve, head, toPairs, fromPairs,
 } from 'ramda';
 import splitPath from './splitPath';
 import {isAbsolutePath, isDir} from './validations';
@@ -54,6 +54,16 @@ export const addDir = (target, fs) =>
   }, fs);
 
 /**
+ * Predicate function for 'filter' to find children nodes of a dir
+ * t -> n -> Boolean
+ * @param {path} - t, target
+ * @param {path} - n, a node
+ *
+ * @return {bool}, true = not a child, false otherwise
+ */
+const notChild = t => compose(complement(equals)(t), slice(0, length(t)));
+
+/**
  * remove a dir with its children (rm -r)
  * @param {path} target - absolute path of a file
  * @param {obj} fs - the fs object
@@ -61,14 +71,18 @@ export const addDir = (target, fs) =>
  * @returns {obj} new fileSystem object
  *
  */
-export const removeDir = (target, {directories, files}) => {
-  // remove all the files/dirs under target
-  const removeAll = filter(compose(complement(equals)(target), slice(0, length(target))));
+export const removeDir = (target, fs) => {
+  const removeAll = filter(notChild(target));
+  const removeFiles = filter(compose(notChild(target), splitFilePath, head));
 
-  return {
-    files: removeAll(files),
-    directories: removeAll(directories),
+  // remove all the files/dirs under target
+  const transformation = {
+    filesDB: compose(fromPairs, removeFiles, toPairs),
+    files: removeAll,
+    directories: removeAll,
   };
+
+  return evolve(transformation, fs);
 };
 
 /**
@@ -77,12 +91,14 @@ export const removeDir = (target, {directories, files}) => {
  *
  * @param {[String]} directories - list of directories
  * @param {obj} filesDB - file content mapped to filename
+ * @param {[[string]]} homePath - the path where cd ~ redirects
  *
- * @returns {files: [[String]], directories: [[String]]}
+ * @returns {files: [[String]], directories: [[String]], filesDB}
  */
 export const initFileSystem = (dirList, filesDB, homePath) => {
   const files = getFiles(filesDB);
   const directories = getDirs(mapToPath(dirList), mapFileDir(filesDB));
 
-  return addDir(homePath, {files, directories});
+  const fs = {files, directories, filesDB};
+  return addDir(homePath, fs);
 };
