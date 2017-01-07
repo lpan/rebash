@@ -10,8 +10,8 @@ describe('touch', () => {
       directories: [
         [],
         ['etc'],
-        ['home'],
         ['etc', 'nginx'],
+        ['home'],
       ],
       files: [],
       filesDB: {},
@@ -24,8 +24,8 @@ describe('touch', () => {
       directories: [
         [],
         ['etc'],
-        ['home'],
         ['etc', 'nginx'],
+        ['home'],
       ],
       files: [
         ['home', 'lol.txt'],
@@ -35,13 +35,13 @@ describe('touch', () => {
       },
     });
 
-    expect(touch({targets: ['yo.txt', 'goose.txt']}, component)).not.toBeDefined();
+    expect(() => { touch({targets: ['yo.txt', 'goose.txt']}, component); }).not.toThrow();
     expect(component.state.fileSystem).toEqual({
       directories: [
         [],
         ['etc'],
-        ['home'],
         ['etc', 'nginx'],
+        ['home'],
       ],
       files: [
         ['home', 'lol.txt'],
@@ -62,8 +62,8 @@ describe('touch', () => {
       directories: [
         [],
         ['etc'],
-        ['home'],
         ['etc', 'nginx'],
+        ['home'],
       ],
       files: [
         ['home', 'test.txt'],
@@ -77,7 +77,7 @@ describe('touch', () => {
 
     component.setState = jest.fn();
 
-    expect(touch({targets: ['home/test.txt']}, component)).not.toBeDefined();
+    expect(() => { touch({targets: ['home/test.txt']}, component); }).toThrow();
     expect(component.setState).not.toBeCalled();
   });
 
@@ -87,22 +87,22 @@ describe('touch', () => {
       directories: [
         [],
         ['etc'],
-        ['home'],
         ['etc', 'nginx'],
+        ['home'],
       ],
       files: [],
       filesDB: {},
     };
 
     const component = mockComponent(currentPath, fileSystem);
-    expect(touch({targets: ['lmao/goose.txt']}, component)).toBeDefined();
+    expect(() => { touch({targets: ['lmao/goose.txt']}, component); }).toThrow();
 
     expect(component.state.fileSystem).toEqual({
       directories: [
         [],
         ['etc'],
-        ['home'],
         ['etc', 'nginx'],
+        ['home'],
       ],
       files: [],
       filesDB: {},

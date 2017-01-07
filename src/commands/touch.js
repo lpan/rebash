@@ -1,31 +1,30 @@
-import {reduce, map, flip, append, forEach, concat} from 'ramda';
+import {reduce, map, forEach} from 'ramda';
 import {addFile} from '../utils/fs';
-import {hasParents, isAbsolutePath, hasDuplicate} from '../utils/validations';
-import {splitPath, joinPath} from '../utils/pathUtils';
+import {hasParents, hasDuplicate} from '../utils/validations';
+import {joinPath, toPath} from '../utils/pathUtils';
 
 const touch = (args, self) => {
   const {fileSystem, currentPath} = self.state;
   const {targets} = args;
 
-  const mapToPath = map(target =>
-    isAbsolutePath(target) ? splitPath(target) : concat(currentPath, splitPath(target)));
+  const mapToPath = map(toPath(currentPath));
 
   const paths = mapToPath(targets);
 
-  for (let i = 0; i < paths.length; i ++) {
-    if (!hasParents(paths[i], fileSystem)) {
-      return `touch: cannot touch '${joinPath(paths[i])}': No such file or directory`;
+  forEach(path => {
+    if (!hasParents(path, fileSystem)) {
+      throw new Error(`touch: cannot touch '${joinPath(path)}': No such file or directory`);
     }
 
-    if (hasDuplicate(paths[i], fileSystem)) {
-      return;
+    if (hasDuplicate(path, fileSystem)) {
+      throw new Error();
     }
-  }
+  }, paths);
 
   const newFs = reduce(
     (accum, current) => addFile(current, accum),
     fileSystem,
-    paths,
+    paths
   );
 
   self.setState({fileSystem: newFs});

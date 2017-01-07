@@ -1,9 +1,6 @@
-import {sortBy, length, lensProp, over, compose, prop} from 'ramda';
+import {sortBy, identity, lensProp, over, compose} from 'ramda';
 
-const sortByAlpha = sortBy(prop(0));
-const sortByLength = sortBy(length);
-
-const sortPaths = compose(sortByLength, sortByAlpha);
+const sortPaths = sortBy(identity);
 
 const dirLens = lensProp('directories');
 const fileLens = lensProp('files');
