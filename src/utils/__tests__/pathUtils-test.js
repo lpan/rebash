@@ -1,4 +1,4 @@
-import splitPath from '../splitPath';
+import {splitPath} from '../pathUtils';
 
 describe('splitPath()', () => {
   it('should split path correctly', () => {

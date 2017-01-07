@@ -27,14 +27,14 @@ describe('The <Terminal /> component', () => {
         directories: [
           [],
           ['home'],
-          ['root'],
           ['home', 'lpan'],
+          ['root'],
         ],
         files: [
           ['home', 'lpan', 'lmao.js'],
         ],
+        filesDB: {'/home/lpan/lmao.js': null},
       },
-      files: {'/home/lpan/lmao.js': null},
       currentPath: [],
       homePath: ['root'],
     });

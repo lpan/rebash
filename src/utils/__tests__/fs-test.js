@@ -18,8 +18,8 @@ describe('fs helpers', () => {
         directories: [
           [],
           ['etc'],
-          ['home'],
           ['etc', 'nginx'],
+          ['home'],
           ['home', 'lpan'],
         ],
         files: [],
@@ -38,14 +38,14 @@ describe('fs helpers', () => {
         directories: [
           [],
           ['etc'],
-          ['home'],
           ['etc', 'nginx'],
+          ['home'],
           ['home', 'lpan'],
         ],
         files: [
-          ['lmao.js'],
           ['etc', 'nginx', 'nginx.conf'],
           ['home', 'lpan', 'secret.txt'],
+          ['lmao.js'],
         ],
         filesDB: {
           '/home/lpan/secret.txt': 'ayy lmao',
@@ -68,8 +68,8 @@ describe('fs helpers', () => {
         directories: [
           [],
           ['etc'],
-          ['home'],
           ['etc', 'nginx'],
+          ['home'],
           ['home', 'lpan'],
         ],
         files: [
@@ -93,8 +93,8 @@ describe('fs helpers', () => {
         directories: [
           [],
           ['etc'],
-          ['home'],
           ['etc', 'nginx'],
+          ['home'],
           ['home', 'goose'],
           ['home', 'lpan'],
         ],
@@ -115,8 +115,8 @@ describe('fs helpers', () => {
           [],
           ['home'],
           ['home', 'goose'],
-          ['home', 'lpan'],
           ['home', 'goose', 'docs'],
+          ['home', 'lpan'],
         ],
         files: [],
         filesDB: {},
@@ -127,8 +127,8 @@ describe('fs helpers', () => {
           [],
           ['home'],
           ['home', 'goose'],
-          ['home', 'lpan'],
           ['home', 'goose', 'docs'],
+          ['home', 'lpan'],
         ],
         files: [],
         filesDB: {},

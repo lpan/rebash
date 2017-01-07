@@ -29,13 +29,13 @@ describe('ls', () => {
     const output = ls({fulls: [], flags: []}, component);
 
     expect(mapToName(output)).toEqual([
-      'dank.php',
       'secrets',
+      'dank.php',
     ]);
 
     expect(mapToStyle(output)).toEqual([
-      normalOutput,
       highlightedOutput,
+      normalOutput,
     ]);
   });
 
@@ -59,16 +59,16 @@ describe('ls', () => {
     const output = ls({fulls: [], flags: []}, component);
 
     expect(mapToName(output)).toEqual([
+      'dank',
       'bank.cpp',
       'cank.bf',
-      'dank',
       'eank.php',
     ]);
 
     expect(mapToStyle(output)).toEqual([
-      normalOutput,
-      normalOutput,
       highlightedOutput,
+      normalOutput,
+      normalOutput,
       normalOutput,
     ]);
   });
@@ -96,15 +96,15 @@ describe('ls', () => {
     expect(mapToName(output)).toEqual([
       'etc',
       'home',
-      'virus.py',
       'zzz',
+      'virus.py',
     ]);
 
     expect(mapToStyle(output)).toEqual([
       highlightedOutput,
       highlightedOutput,
-      normalOutput,
       highlightedOutput,
+      normalOutput,
     ]);
   });
 
@@ -132,16 +132,16 @@ describe('ls', () => {
       '.config',
       'etc',
       'home',
-      'virus.py',
       'zzz',
+      'virus.py',
     ]);
 
     expect(mapToStyle(output)).toEqual([
       highlightedOutput,
       highlightedOutput,
       highlightedOutput,
-      normalOutput,
       highlightedOutput,
+      normalOutput,
     ]);
   });
 });
