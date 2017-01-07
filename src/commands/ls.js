@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   map, filter, compose, addIndex, equals, last, concat, sortBy,
-  path, init, identity, complement, head,
+  path, init, identity, complement, head, pick,
 } from 'ramda';
 import {output, highlightedOutput} from '../styles';
 import handleOptions from '../utils/handleOptions';
@@ -53,7 +53,7 @@ const ls = (args, self) => {
   const {currentPath, fileSystem} = self.state;
   const {directories, files} = map(
     compose(handleOptions(options, args), getFiles(currentPath)),
-    fileSystem
+    pick(['files', 'directories'], fileSystem)
   );
 
   const mapFiles = mapOutput(output, 'files');

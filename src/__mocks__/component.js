@@ -3,13 +3,13 @@ import {toPairs, forEach, compose} from 'ramda';
 const fsDefault = {
   directories: [],
   files: [],
+  filesDB: {},
 };
 
-const mockComponent = (currentPath = [], fileSystem = fsDefault, files = {}) => ({
+const mockComponent = (currentPath = [], fileSystem = fsDefault) => ({
   state: {
     currentPath,
     fileSystem,
-    files,
     visibles: [],
     history: [],
   },
