@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   map, filter, compose, addIndex, equals, last, concat, sortBy,
-  path, init, identity, complement, head, pick,
+  init, identity, complement, head, pick,
 } from 'ramda';
 import {output, highlightedOutput} from '../styles';
 import handleOptions from '../utils/handleOptions';
@@ -16,7 +16,7 @@ const mapOutput = (style, key) => addIndex(map)((file, i) =>
   </span>);
 
 // sort final span tags by alphabetical order
-const sortByName = sortBy(path(['props', 'children']));
+const sortByName = sortBy(identity);
 
 /*
  * Option filters
@@ -52,7 +52,7 @@ const getFiles = currentPath => compose(
 const ls = (args, self) => {
   const {currentPath, fileSystem} = self.state;
   const {directories, files} = map(
-    compose(handleOptions(options, args), getFiles(currentPath)),
+    compose(sortByName, handleOptions(options, args), getFiles(currentPath)),
     pick(['files', 'directories'], fileSystem)
   );
 
@@ -61,12 +61,9 @@ const ls = (args, self) => {
 
   return (
     <div>
-      {compose(
-        sortByName,
-        concat
-      )(
-        mapFiles(files),
-        mapDirs(directories)
+      {concat(
+        mapDirs(directories),
+        mapFiles(files)
       )}
     </div>
   );

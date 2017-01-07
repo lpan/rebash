@@ -22,8 +22,6 @@ const touch = (args, self) => {
     }
   }
 
-  console.log('yo');
-
   const newFs = reduce(
     (accum, current) => addFile(current, accum),
     fileSystem,
