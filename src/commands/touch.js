@@ -1,6 +1,6 @@
 import {reduce, map, forEach} from 'ramda';
 import {addFile} from '../utils/fs';
-import {hasParents, hasDuplicate} from '../utils/validations';
+import {hasParents, doesExist} from '../utils/validations';
 import {joinPath, toPath} from '../utils/pathUtils';
 
 const touch = (args, self) => {
@@ -11,12 +11,13 @@ const touch = (args, self) => {
 
   const paths = mapToPath(targets);
 
-  forEach(path => {
+  forEach((path) => {
     if (!hasParents(path, fileSystem)) {
       throw new Error(`touch: cannot touch '${joinPath(path)}': No such file or directory`);
     }
 
-    if (hasDuplicate(path, fileSystem)) {
+    // if path already exists in fs, we exit.
+    if (doesExist(path, fileSystem)) {
       throw new Error();
     }
   }, paths);
