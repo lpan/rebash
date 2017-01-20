@@ -33,7 +33,7 @@ const appendOutput = ({visibles}, newOutput) => {
  *
  * @returns {func}, modified function
  */
-const decorateSelf = ([commandName, commandFn], self) => command => {
+const decorateSelf = ([commandName, commandFn], self) => (command) => {
   const {history, visibles, currentPath} = self.state;
   const args = parseArgs(command);
 
@@ -48,9 +48,9 @@ const decorateSelf = ([commandName, commandFn], self) => command => {
   let result;
   try {
     result = commandFn(args, self);
-  } catch ({message}) {
+  } catch (e) {
     self.setState({
-      visibles: appendOutput(newState, message),
+      visibles: appendOutput(newState, e.message),
     });
     return;
   }
@@ -65,7 +65,7 @@ const decorateSelf = ([commandName, commandFn], self) => command => {
 
   // if output returns an unresolved promise
   if (result && type(result.then) === 'Function') {
-    result.then(output => {
+    result.then((output) => {
       self.setState({visibles: appendOutput(newState, output)});
     });
   }
