@@ -22,7 +22,7 @@ const directories = [
 ];
 
 // The initial path of the shell when the component rendered
-const initialPath = '/usr';
+const initialPath = '/home';
 
 ReactDOM.render(
   <Terminal

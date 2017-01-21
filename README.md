@@ -10,6 +10,14 @@ Terminal emulator component for React!
 npm install --save rebash
 ```
 
+## Developer Setup
+```bash
+git clone https://github.com/lpan/rebash
+cd rebash
+npm install
+npm start # server will listen on localhost:8080
+```
+
 ## Include the Component
 
 ```javascript
