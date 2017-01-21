@@ -1,4 +1,4 @@
-# Rebash
+# [Rebash](http://lpan.io/rebash/)
 Terminal emulator component for React!
 
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](https://github.com/lpan/rebash/blob/master/LICENSE)
