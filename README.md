@@ -1,7 +1,9 @@
 # Rebash
 Terminal emulator component for React!
 
-[![License][license-image]][license-url]
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](https://github.com/lpan/rebash/blob/master/LICENSE)
+[![npm](https://img.shields.io/npm/dm/localeval.svg?style=flat-square)](https://www.npmjs.com/package/rebash)
+
 
 ## Installation and Usage
 ```
