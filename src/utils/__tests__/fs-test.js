@@ -12,7 +12,7 @@ describe('fs helpers', () => {
       const paths = newInit([
         '/home/lpan',
         '/etc/nginx/',
-      ], {}, ['home', 'lpan']);
+      ], {});
 
       expect(paths).toEqual({
         directories: [
@@ -32,7 +32,7 @@ describe('fs helpers', () => {
         '/home/lpan/secret.txt': 'ayy lmao',
         '/etc/nginx/nginx.conf': 'dank mr. goose',
         '/lmao.js': 'ayy mr.goose',
-      }, ['home', 'lpan']);
+      });
 
       expect(paths).toEqual({
         directories: [
@@ -62,7 +62,7 @@ describe('fs helpers', () => {
       ], {
         '/home/lpan/lmao.js': null,
         '/etc/nginx/goose.config': 'goose',
-      }, ['home', 'lpan']);
+      });
 
       expect(paths).toEqual({
         directories: [
@@ -87,7 +87,7 @@ describe('fs helpers', () => {
       const paths = newInit([
         '/home/lpan',
         '/etc/nginx/',
-      ], {}, ['home', 'goose']);
+      ], {});
 
       expect(paths).toEqual({
         directories: [
@@ -95,7 +95,6 @@ describe('fs helpers', () => {
           ['etc'],
           ['etc', 'nginx'],
           ['home'],
-          ['home', 'goose'],
           ['home', 'lpan'],
         ],
         files: [],

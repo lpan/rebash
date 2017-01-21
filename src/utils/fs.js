@@ -112,10 +112,10 @@ export const removeFile = (target, fs) =>
  *
  * @returns {files: [[String]], directories: [[String]], filesDB}
  */
-export const initFileSystem = (dirList, filesDB, homePath) => {
+export const initFileSystem = (dirList, filesDB) => {
   const files = getFiles(filesDB);
   const directories = getDirs(mapToPath(dirList), mapFileDir(filesDB));
 
   const fs = {files, directories, filesDB};
-  return addDir(homePath, fs);
+  return fs;
 };

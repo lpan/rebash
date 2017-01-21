@@ -1,10 +1,11 @@
 import React, {Component, PropTypes} from 'react';
-import {merge, pick} from 'ramda';
+import {merge, pick, compose, uniq, concat} from 'ramda';
 import Wrapper from './components/Wrapper';
 import {initFileSystem} from './utils/fs';
 import bindCommands from './utils/bindCommands';
-import defaultCommands from './commands';
 import {commandsType} from './utils/customPropTypes';
+import {splitPath} from './utils/pathUtils';
+import defaultCommands from './commands';
 
 const mergeDefault = merge(defaultCommands);
 
@@ -16,7 +17,10 @@ class Terminal extends Component {
     super(props);
 
     const {initialPath, directories, files, username} = props;
-    const homePath = username === 'root' ? [username] : ['home', username];
+    const homePath = username === 'root' ? `/${username}` : `/home/${username}`;
+    const currentPath = splitPath(initialPath);
+
+    const finalDirs = compose(uniq, concat(directories))([initialPath, homePath]);
 
     this.state = {
       username,
@@ -25,10 +29,10 @@ class Terminal extends Component {
       // An ordered list of {command: '', outputs: []} visible on to the user
       visibles: [],
       // {directories: [], files: []}
-      fileSystem: initFileSystem(directories, files, homePath),
+      fileSystem: initFileSystem(finalDirs, files),
       // an array representation of current path
-      currentPath: initialPath,
-      homePath,
+      currentPath,
+      homePath: splitPath(homePath),
     };
   }
 
@@ -54,13 +58,13 @@ Terminal.propTypes = {
   directories: PropTypes.arrayOf(PropTypes.string),
   // file content mapped to file absolute path
   files: PropTypes.objectOf(PropTypes.string),
-  initialPath: PropTypes.arrayOf(PropTypes.string),
+  initialPath: PropTypes.string,
   commands: commandsType,
 };
 
 Terminal.defaultProps = {
   username: 'root',
-  initialPath: [],
+  initialPath: '/',
   files: {},
   directories: [],
 };
