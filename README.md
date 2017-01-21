@@ -58,50 +58,49 @@ export default MyTerminal;
 ### Props
 
 #### username:
-Unix username to display on the terminal.
 
+- description: Unix username to display on the terminal.
 - type: `String`
 - default: `root`
 - eg: `lawrence`
 
 #### directories:
-A list of directories represented by their absolute paths
 
+- description: A list of directories represented by their absolute paths
 - type: `Array of Strings`
 - default: `[]`
 - eg: `['/home', '/etc/nginx/']`
 
 #### files
-Map used to look up files. `{'/absolute/path': 'file content'}`
 
-**note:** There is no need to manually create the parent dirs for those files.
-Rebash will take care of them.
-
+- description: Map used to look up files. `{'/absolute/path': 'file content'}`
 - type: `Map of Strings`
 - default: `{}`
 - eg: `{'/home/goose.txt': 'Mr. Goose is life', '/lmao.txt': null}`
 
 #### initialPath
-Initial path when the `Terminal` is rendered
 
+- description: Initial path when the `Terminal` is rendered
 - type: `String`
 - default: `/`
 - eg: `'/home/lawrence'`
 
 #### commands
-A list of custom commands. See
-[Custom commands](https://github.com/lpan/rebash#custom-commands) for moreinformation.
 
+- description: A list of custom commands.
 - type: `Map of Functions`
 - default: `{}`
 - eg: `{'say-hello': ({targets}) => 'hello ' + targets[0]}`
+
+See
+[Custom commands](https://github.com/lpan/rebash#custom-commands) for more information.
 
 ### Custom commands
 Before you begin, you may want to take a look at
 [src/commands/index.js](src/commands/index.js) for all the built-in commands and
 how they are implemented.
 
-A `command` is a JavaScript function which takes **2 parameters**, namely `args` and
+A `command` is a JavaScript function that takes **2 parameters**, namely `args` and
 `self`.
 
 A typical command will look like this:
@@ -134,8 +133,8 @@ parser will produce the following object and pass it to the command function as
 See [src/utils/parseArgs.js](src/utils/parseArgs.js) for more information
 
 #### self
-Most of the time, you do not want to mess with `self` unless you want to mutate
-the internal state of Rebash. `self` is just a reference of the instance of the
+You do not want to mess with `self` unless you want to mutate the internal state
+of Rebash. In fact, `self` is just a reference to the instance of the
 top level React Component. You can access the component state from `self.state`,
 mutate the state and trigger the component to rerender with `self.setState`,
 etc.
@@ -144,5 +143,5 @@ see [src/Terminal.js](src/Terminal.js) for more information.
 
 #### Print something out
 To print out some text, you can either return a string, or throw an error. The
-`clear-hello` command will print `hello Lawrence` if I type `clear-hello
+`clear-hello` command shown above will print `hello Lawrence` if I type `clear-hello
 lawrence`.
