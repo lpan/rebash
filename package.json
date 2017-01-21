@@ -1,8 +1,8 @@
 {
   "name": "rebash",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Bash interface for you website. Built with React",
-  "main": "index.js",
+  "main": "src/Terminal.js",
   "scripts": {
     "start": "webpack-dev-server --inline --content-base example/build/",
     "test": "jest",
@@ -17,7 +17,7 @@
     "emulator",
     "react"
   ],
-  "author": "Lawrence Pan <lawrencefeipan@gmail.com>",
+  "author": "Lawrence Pan <lawrencefeipan@gmail.com> (http://lpan.io)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/lpan/rebash/issues"
