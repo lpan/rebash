@@ -23,9 +23,14 @@ export const isDir = compose(equals('/'), last);
 export const hasParents = (path, {directories}) => contains(init(path), directories);
 
 // Path, fs -> bool
+export const isFile = (path, {files}) => contains(path, files);
+
+export const isDirectory = (path, {directories}) => contains(path, directories);
+
+// Path, fs -> bool
 export const hasChildren = (path, {directories, files}) => {
-  const hasPath = compose(equals(path), init);
-  return or(any(hasPath, directories), any(hasPath, files));
+  const hasPath = any(compose(equals(path), init));
+  return or(hasPath(directories), hasPath(files));
 };
 
 // Path, fs -> bool
