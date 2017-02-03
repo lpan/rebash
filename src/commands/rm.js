@@ -1,29 +1,22 @@
-import {apply, complement, compose, map, reduce} from 'ramda';
-import {hasChildren, doesExist} from '../utils/validations';
-import handleOptions from '../utils/handleOptions';
-import {joinPath, toPath} from '../utils/pathUtils';
+import {apply, compose, map, reduce} from 'ramda';
+import {doesExist, isFile} from '../utils/validations';
+import handleOptions, {genExpect} from '../utils/handleOptions';
+import {toPath} from '../utils/pathUtils';
 import {removeFile, removeDir} from '../utils/fs';
-
-const genExpect = (expectation, makeError) => (target, fs) => {
-  if (!expectation(target, fs)) {
-    throw new Error(makeError(joinPath(target)));
-  }
-  return [target, fs];
-};
 
 const existError = target =>
   `rm: cannot remove ${target}: No such file or directory`;
 
-const hasChildrenError = target =>
+const isDirectoryError = target =>
   `rm: cannot remove ${target}: Is a directory`;
 
 const expectExist = genExpect(doesExist, existError);
 
-const expectNoChildren = genExpect(complement(hasChildren), hasChildrenError);
+const expectFile = genExpect(isFile, isDirectoryError);
 
 const options = {
   handlers: {
-    none: compose(apply(removeFile), apply(expectNoChildren), expectExist),
+    none: compose(apply(removeFile), apply(expectFile), expectExist),
     r: compose(apply(removeDir), expectExist),
   },
   fulls: {

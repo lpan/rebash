@@ -1,17 +1,15 @@
 import {apply, reduce, compose, map} from 'ramda';
-import handleOptions from '../utils/handleOptions';
+import handleOptions, {genExpect} from '../utils/handleOptions';
 import {addDir} from '../utils/fs';
 import {hasParents} from '../utils/validations';
-import {joinPath, toPath} from '../utils/pathUtils';
+import {toPath} from '../utils/pathUtils';
 
-const checkParent = (target, fs) => {
-  if (!hasParents(target, fs)) {
-    throw new Error(`mkdir: cannot create directory ${joinPath(target)}: No such file or directory`);
-  }
-  return [target, fs];
-};
+const noParentError = target =>
+  `mkdir: cannot create directory ${target}: No such file or directory`;
 
-const addDirCheckParent = compose(apply(addDir), checkParent);
+const expectParent = genExpect(hasParents, noParentError);
+
+const addDirCheckParent = compose(apply(addDir), expectParent);
 
 const options = {
   handlers: {

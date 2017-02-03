@@ -2,6 +2,7 @@ import {
   contains, complement, keys, forEach, has, prop, join, isEmpty, omit,
   compose, uniq, concat, props,
 } from 'ramda';
+import {joinPath} from './pathUtils';
 
 // 'none' key points to defaultFilter (filter to be applied when no arg supplied
 const defaultOpt = 'none';
@@ -10,7 +11,7 @@ const pickDefault = prop(defaultOpt);
 const omitDefault = omit(defaultOpt);
 
 // if opts contains default filter
-const validateDefault = optsType => {
+const validateDefault = (optsType) => {
   if (!hasDefault(optsType)) {
     throw new Error('Default option handler not found');
   }
@@ -47,13 +48,13 @@ const getHandler = (opts, optsDic) => {
  * @returns {func} - composed filters
  */
 const handleOptions = (opts, {fulls, flags}) => {
-  const validateFulls = forEach(full => {
+  const validateFulls = forEach((full) => {
     if (notContains(full, keys(opts.fulls))) {
       throw new Error(`--${full}: no such option`);
     }
   });
 
-  const validateFlags = forEach(flag => {
+  const validateFlags = forEach((flag) => {
     if (notContains(flag, keys(opts.handlers))) {
       throw new Error(`-${flag}: no such option`);
     }
@@ -69,6 +70,15 @@ const handleOptions = (opts, {fulls, flags}) => {
   validateDefault(opts.handlers);
 
   return getHandler(options, opts.handlers);
+};
+
+// (fn, fn) -> (Path, FileSystem)
+// Throw error if the expectation is not met
+export const genExpect = (expectation, makeError) => (target, fs) => {
+  if (!expectation(target, fs)) {
+    throw new Error(makeError(joinPath(target)));
+  }
+  return [target, fs];
 };
 
 export default handleOptions;
